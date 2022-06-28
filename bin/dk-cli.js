@@ -2,10 +2,10 @@
 
 const { Command } = require("commander")
 const path = require("path")
-const fs = require("fs")
 const pkg = require("../package.json")
 const defaultConfig = require("./default.config")
 const userDir = process.cwd()
+const { draw } = require("../src/draw")
 
 const { init } = require("../src/init")
 const { getUserConfig, pickKeywords } = require("../src/util")
@@ -26,7 +26,7 @@ program
   .argument("<filePath>", "Keywords will be automatically generated based on the configured file")
   .action((filePath) => {
     const keywords = pickKeywords(path.resolve(userDir, filePath))
-    console.log(keywords)
+    draw(keywords, getUserConfig(userConfigPath))
   })
 
 program.parse()

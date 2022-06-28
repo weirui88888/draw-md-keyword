@@ -8,6 +8,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "base64-img": "^1.0.4",
+    "canvas": "^2.9.3",
     "chalk": "^4.1.2",
     "commander": "^9.3.0",
     "commonmark": "^0.30.0"
