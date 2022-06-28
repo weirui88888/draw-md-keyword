@@ -9,7 +9,8 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
-    "commander": "^9.3.0"
+    "commander": "^9.3.0",
+    "commonmark": "^0.30.0"
   },
   "bin": {
     "dk": "./bin/dk-cli.js"
