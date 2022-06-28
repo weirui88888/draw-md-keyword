@@ -1,0 +1,17 @@
+{
+  "name": "dkeyword",
+  "version": "1.0.0",
+  "description": "Generate a random style cloud map based on the input markdown file",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^9.3.0"
+  },
+  "bin": {
+    "dk": "./bin/dk-cli.js"
+  }
+}
