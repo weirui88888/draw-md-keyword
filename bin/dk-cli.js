@@ -26,7 +26,7 @@ program
   .argument("<filePath>", "Keywords will be automatically generated based on the configured file")
   .action((filePath) => {
     const keywords = pickKeywords(path.resolve(userDir, filePath))
-    // console.log(getUserConfig(userConfigPath))
+    console.log(keywords)
   })
 
 program.parse()
