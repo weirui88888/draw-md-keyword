@@ -5,8 +5,7 @@ const path = require("path")
 const pkg = require("../package.json")
 const defaultConfig = require("./default.config")
 const userDir = process.cwd()
-const { draw } = require("../src/draw")
-
+const Generator = require("../src/generator")
 const { init } = require("../src/init")
 const { getUserConfig, pickKeywords } = require("../src/util")
 const userConfigPath = path.resolve(userDir, defaultConfig.configFileName)
@@ -26,7 +25,7 @@ program
   .argument("<filePath>", "Keywords will be automatically generated based on the configured file")
   .action((filePath) => {
     const keywords = pickKeywords(path.resolve(userDir, filePath))
-    draw(keywords, getUserConfig(userConfigPath))
+    new Generator(keywords, getUserConfig(userConfigPath)).draw()
   })
 
 program.parse()
