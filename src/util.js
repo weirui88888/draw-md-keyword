@@ -48,7 +48,32 @@ const pickKeywords = (filePath) => {
   return parseMarkDownKeyword(markdown)
 }
 
+const random = (min, max) => Math.floor(Math.random() * (max - min) + min)
+
+const calculateKeywords = (keywords, max, singleKeywordMaxLength, ctx) => {
+  const fonts = ["muyao", "stroke", "katong", "maobi"]
+  // 这里应该根据数量，大致计算出font
+  const originKeywords = keywords.length > max ? keywords.splice(0, 10) : keywords
+  const handledKeywords = originKeywords.map((keyword) => {
+    return keyword.length > singleKeywordMaxLength ? `${keyword.substr(0, singleKeywordMaxLength)}...` : keyword
+  })
+  const applyKeywords = handledKeywords.map((keyword) => {
+    const fontRandomIndex = random(0, 4)
+    ctx.font = `30px ${fonts[fontRandomIndex]}`
+    const width = ctx.measureText(keyword).width + 10 // 10是padding
+    return {
+      width,
+      arcR: width / 2,
+      keyword,
+      font: fonts[fontRandomIndex]
+    }
+  })
+  return applyKeywords
+}
+
 exports.getUserConfig = getUserConfig
 exports.greenLog = greenLog
 exports.redLog = redLog
 exports.pickKeywords = pickKeywords
+exports.random = random
+exports.calculateKeywords = calculateKeywords
