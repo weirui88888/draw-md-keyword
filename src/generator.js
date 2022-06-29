@@ -1,23 +1,35 @@
-const path = require("path")
-const base64Img = require("base64-img")
-const { createCanvas, registerFont } = require("canvas")
-const { calculateKeywords } = require("./util")
+const path = require('path')
+const base64Img = require('base64-img')
+const { createCanvas, registerFont } = require('canvas')
+const { calculateKeywords } = require('./util')
 
-const fontPath = path.join(process.execPath, "../../lib/node_modules/draw-md-keyword/font/Muyao-Softbrush.ttf")
-const fontPathStroke = path.join(process.execPath, "../../lib/node_modules/draw-md-keyword/font/stroke.ttf")
-const fontPathMaobi = path.join(process.execPath, "../../lib/node_modules/draw-md-keyword/font/maobi.ttf")
-const fontPathKatong = path.join(process.execPath, "../../lib/node_modules/draw-md-keyword/font/katong.ttf")
+const fontPath = path.join(
+  process.execPath,
+  '../../lib/node_modules/draw-md-keyword/font/Muyao-Softbrush.ttf'
+)
+const fontPathStroke = path.join(
+  process.execPath,
+  '../../lib/node_modules/draw-md-keyword/font/stroke.ttf'
+)
+const fontPathMaobi = path.join(
+  process.execPath,
+  '../../lib/node_modules/draw-md-keyword/font/maobi.ttf'
+)
+const fontPathKatong = path.join(
+  process.execPath,
+  '../../lib/node_modules/draw-md-keyword/font/katong.ttf'
+)
 registerFont(fontPath, {
-  family: "muyao"
+  family: 'muyao'
 })
 registerFont(fontPathStroke, {
-  family: "stroke"
+  family: 'stroke'
 })
 registerFont(fontPathKatong, {
-  family: "katong"
+  family: 'katong'
 })
 registerFont(fontPathMaobi, {
-  family: "maobi"
+  family: 'maobi'
 })
 
 class Circle {
@@ -38,24 +50,30 @@ class Circle {
 
 class Generator {
   constructor(keywords, userConfig) {
-    const { folderName, max, singleKeywordMaxLength, author, canvasConfig } = userConfig
+    const { folderName, max, singleKeywordMaxLength, author, canvasConfig } =
+      userConfig
     this.keywords = keywords
     this.userConfig = this.userConfig
     // user config
-    this.folderName = folderName || "dmk"
+    this.folderName = folderName || 'dmk'
     this.max = max || 10
     this.singleKeywordMaxLength = singleKeywordMaxLength || 10
-    this.author = author || ""
+    this.author = author || ''
 
     // canvas config
     this.canvas = createCanvas(canvasConfig.width, canvasConfig.height)
-    this.ctx = this.canvas.getContext("2d")
+    this.ctx = this.canvas.getContext('2d')
     this.canvasWidth = canvasConfig.width
     this.canvasHeight = canvasConfig.height
     this.authorPointX = canvasConfig.width - 100
     this.authorPointY = canvasConfig.height - 100
     this.showAuthor = !!author
-    this.applyKeywords = calculateKeywords(this.keywords, this.max, this.singleKeywordMaxLength, this.ctx)
+    this.applyKeywords = calculateKeywords(
+      this.keywords,
+      this.max,
+      this.singleKeywordMaxLength,
+      this.ctx
+    )
     this.circleArray = []
     this.circleNumber = 1
   }
@@ -80,7 +98,7 @@ class Generator {
     // 根据半径从大到小画圆。
     this.circleArray
       .sort((a, b) => b.r - a.r)
-      .forEach((c) => {
+      .forEach(c => {
         this.drawOneCircle(c)
       })
   }
@@ -113,10 +131,12 @@ class Generator {
         TR: this.applyKeywords[0].arcR,
         info: this.applyKeywords[0]
       }
-    let lenArr = this.circleArray.map((c) => {
+    let lenArr = this.circleArray.map(c => {
       let xSpan = c.x - x
       let ySpan = c.y - y
-      return Math.floor(Math.sqrt(Math.pow(xSpan, 2) + Math.pow(ySpan, 2))) - c.r
+      return (
+        Math.floor(Math.sqrt(Math.pow(xSpan, 2) + Math.pow(ySpan, 2))) - c.r
+      )
     })
     let minCircleLen = Math.min(...lenArr)
     let minC = this.circleArray[lenArr.indexOf(minCircleLen)]
@@ -132,12 +152,18 @@ class Generator {
 
   check(x, y, r) {
     if (this.showAuthor && this.checkCollide(x, y, r)) return false
-    return !(x + r > this.canvasWidth || x - r < 0 || y + r > this.canvasHeight || y - r < 0)
+    return !(
+      x + r > this.canvasWidth ||
+      x - r < 0 ||
+      y + r > this.canvasHeight ||
+      y - r < 0
+    )
   }
 
   checkCollide(x, y, r) {
     const abs = Math.sqrt(
-      (x - this.authorPointX) * (x - this.authorPointX) + (y - this.authorPointY) * (y - this.authorPointY)
+      (x - this.authorPointX) * (x - this.authorPointX) +
+        (y - this.authorPointY) * (y - this.authorPointY)
     )
     return abs < r + 50
   }
@@ -150,7 +176,7 @@ class Generator {
     // ctx.arc(c.x, c.y, c.r, 0, 2 * Math.PI)
     // ctx.stroke()
     // ctx.fill()
-    ctx.fillStyle = "#000000"
+    ctx.fillStyle = '#000000'
     ctx.font = `40px ${c.keyword.font}`
     ctx.fillText(c.keyword.keyword, c.x - c.r + 5, c.y + 5)
     // ctx.fillText("R:" + c.r, c.x - 10, c.y + 25)
@@ -164,13 +190,18 @@ class Generator {
   generatePng() {
     const base64img = this.canvas.toDataURL()
     const drawImgPath = path.join(path.resolve(), `./${this.folderName}/`)
-    base64Img.img(base64img, drawImgPath, `${Date.now()}`, function (err, filepath) {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log(filepath)
+    base64Img.img(
+      base64img,
+      drawImgPath,
+      `${Date.now()}`,
+      function (err, filepath) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log(filepath)
+        }
       }
-    })
+    )
   }
 }
 

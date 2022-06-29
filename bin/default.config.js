@@ -1,5 +1,5 @@
 module.exports = {
-  configFileName: "dmk.config.js",
+  configFileName: 'dmk.config.js',
   initConfig: () => {
     return `const dkConfig = {
       canvasConfig: {
