@@ -1,7 +1,7 @@
 const path = require('path')
 const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
-const { calculateKeywords } = require('./util')
+const { calculateKeywords, calculateOffsetX } = require('./util')
 
 const paintFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/paint.ttf')
 const hollowFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/hollow.ttf')
@@ -46,6 +46,7 @@ class Generator {
     this.max = max || 10
     this.singleKeywordMaxLength = singleKeywordMaxLength || 10
     this.author = author || ''
+    this.fontSize = canvasConfig.fontSize || 40
 
     // canvas config
     this.canvas = createCanvas(canvasConfig.width, canvasConfig.height)
@@ -55,7 +56,13 @@ class Generator {
     this.authorPointX = canvasConfig.width - 100
     this.authorPointY = canvasConfig.height - 100
     this.showAuthor = !!author
-    this.applyKeywords = calculateKeywords(this.keywords, this.max, this.singleKeywordMaxLength, this.ctx)
+    this.applyKeywords = calculateKeywords(
+      this.fontSize,
+      this.keywords,
+      this.max,
+      this.singleKeywordMaxLength,
+      this.ctx
+    )
     this.circleArray = []
     this.circleNumber = 1
   }
@@ -143,21 +150,24 @@ class Generator {
   }
 
   drawOneCircle(c) {
-    let ctx = this.ctx
-    ctx.beginPath()
-    // ctx.strokeStyle = c.c
-    // ctx.fillStyle = c.c
-    // ctx.arc(c.x, c.y, c.r, 0, 2 * Math.PI)
-    // ctx.stroke()
-    // ctx.fill()
-    ctx.fillStyle = '#000000'
-    ctx.font = `40px ${c.keyword.font}`
-    ctx.fillText(c.keyword.keyword, c.x - c.r + 5, c.y + 5)
-    // ctx.fillText("R:" + c.r, c.x - 10, c.y + 25)
-
-    this.circleNumber++
-    if (this.circleNumber - 1 === this.applyKeywords.length) {
-      this.generatePng()
+    try {
+      let ctx = this.ctx
+      ctx.beginPath()
+      ctx.strokeStyle = c.c
+      ctx.fillStyle = c.c
+      ctx.arc(c.x, c.y, c.r, 0, 2 * Math.PI)
+      ctx.stroke()
+      ctx.fill()
+      ctx.fillStyle = '#000000'
+      ctx.textBaseline = 'top'
+      ctx.font = `${this.fontSize}px ${c.keyword.font}`
+      ctx.fillText(c.keyword.keyword, c.x - c.r + calculateOffsetX(c.r, c.keyword.width), c.y - this.fontSize / 2)
+      this.circleNumber++
+      if (this.circleNumber - 1 === this.applyKeywords.length) {
+        this.generatePng()
+      }
+    } catch (error) {
+      console.log(error.message)
     }
   }
 

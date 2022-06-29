@@ -4,7 +4,8 @@ module.exports = {
     return `const dkConfig = {
       canvasConfig: {
         width: 800, // 图片宽度
-        height: 600 // 图片高度
+        height: 600, // 图片高度
+        fontSize: 40 // 字体的默认大小，字体越大，会使生成的云图中的关键字越少
       },
       folderName:'dmk', // 生成图片的文件夹
       max:10, // 最多生成包括多少个关键字的云图，超出设置的值时会随机选中10个

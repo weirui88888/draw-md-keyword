@@ -3,6 +3,8 @@ const chalk = require('chalk')
 const log = console.log
 const commonMark = require('commonMark')
 
+const keywordPadding = 10
+
 const greenLog = message => {
   log(chalk.green(message))
 }
@@ -50,7 +52,7 @@ const pickKeywords = filePath => {
 
 const random = (min, max) => Math.floor(Math.random() * (max - min) + min)
 
-const calculateKeywords = (keywords, max, singleKeywordMaxLength, ctx) => {
+const calculateKeywords = (fontSize, keywords, max, singleKeywordMaxLength, ctx) => {
   const fonts = ['paint', 'hollow', 'cartoon', 'brush']
   // 这里应该根据数量，大致计算出font
   const originKeywords = keywords.length > max ? keywords.splice(0, max) : keywords
@@ -60,8 +62,8 @@ const calculateKeywords = (keywords, max, singleKeywordMaxLength, ctx) => {
 
   const applyKeywords = handledKeywords.map(keyword => {
     const fontRandomIndex = random(0, 4)
-    ctx.font = `40px ${fonts[fontRandomIndex]}`
-    const width = ctx.measureText(keyword).width + 10 // 10是padding
+    ctx.font = `${fontSize}px ${fonts[fontRandomIndex]}`
+    const width = ctx.measureText(keyword).width + keywordPadding
     return {
       width,
       arcR: width / 2,
@@ -72,9 +74,14 @@ const calculateKeywords = (keywords, max, singleKeywordMaxLength, ctx) => {
   return applyKeywords
 }
 
+const calculateOffsetX = (radius, width) => {
+  return radius - width / 2 + keywordPadding / 2
+}
+
 exports.getUserConfig = getUserConfig
 exports.greenLog = greenLog
 exports.redLog = redLog
 exports.pickKeywords = pickKeywords
 exports.random = random
 exports.calculateKeywords = calculateKeywords
+exports.calculateOffsetX = calculateOffsetX
