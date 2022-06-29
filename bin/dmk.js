@@ -23,10 +23,7 @@ program
 program
   .command('draw')
   .description('Randomly output cloud images based on your input file')
-  .argument(
-    '<filePath>',
-    'Keywords will be automatically generated based on the configured file'
-  )
+  .argument('<filePath>', 'Keyword cloud map will be automatically generated according to the configuration file')
   .action(filePath => {
     const keywords = pickKeywords(path.resolve(userDir, filePath))
     new Generator(keywords, getUserConfig(userConfigPath)).draw()

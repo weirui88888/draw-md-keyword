@@ -3,33 +3,21 @@ const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
 const { calculateKeywords } = require('./util')
 
-const fontPath = path.join(
-  process.execPath,
-  '../../lib/node_modules/draw-md-keyword/font/Muyao-Softbrush.ttf'
-)
-const fontPathStroke = path.join(
-  process.execPath,
-  '../../lib/node_modules/draw-md-keyword/font/stroke.ttf'
-)
-const fontPathMaobi = path.join(
-  process.execPath,
-  '../../lib/node_modules/draw-md-keyword/font/maobi.ttf'
-)
-const fontPathKatong = path.join(
-  process.execPath,
-  '../../lib/node_modules/draw-md-keyword/font/katong.ttf'
-)
-registerFont(fontPath, {
-  family: 'muyao'
+const paintFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/paint.ttf')
+const hollowFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/hollow.ttf')
+const brushFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/brush.ttf')
+const cartoonFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/cartoon.ttf')
+registerFont(paintFontPath, {
+  family: 'paint'
 })
-registerFont(fontPathStroke, {
-  family: 'stroke'
+registerFont(hollowFontPath, {
+  family: 'hollow'
 })
-registerFont(fontPathKatong, {
-  family: 'katong'
+registerFont(cartoonFontPath, {
+  family: 'cartoon'
 })
-registerFont(fontPathMaobi, {
-  family: 'maobi'
+registerFont(brushFontPath, {
+  family: 'brush'
 })
 
 class Circle {
@@ -50,8 +38,7 @@ class Circle {
 
 class Generator {
   constructor(keywords, userConfig) {
-    const { folderName, max, singleKeywordMaxLength, author, canvasConfig } =
-      userConfig
+    const { folderName, max, singleKeywordMaxLength, author, canvasConfig } = userConfig
     this.keywords = keywords
     this.userConfig = this.userConfig
     // user config
@@ -68,12 +55,7 @@ class Generator {
     this.authorPointX = canvasConfig.width - 100
     this.authorPointY = canvasConfig.height - 100
     this.showAuthor = !!author
-    this.applyKeywords = calculateKeywords(
-      this.keywords,
-      this.max,
-      this.singleKeywordMaxLength,
-      this.ctx
-    )
+    this.applyKeywords = calculateKeywords(this.keywords, this.max, this.singleKeywordMaxLength, this.ctx)
     this.circleArray = []
     this.circleNumber = 1
   }
@@ -134,9 +116,7 @@ class Generator {
     let lenArr = this.circleArray.map(c => {
       let xSpan = c.x - x
       let ySpan = c.y - y
-      return (
-        Math.floor(Math.sqrt(Math.pow(xSpan, 2) + Math.pow(ySpan, 2))) - c.r
-      )
+      return Math.floor(Math.sqrt(Math.pow(xSpan, 2) + Math.pow(ySpan, 2))) - c.r
     })
     let minCircleLen = Math.min(...lenArr)
     let minC = this.circleArray[lenArr.indexOf(minCircleLen)]
@@ -152,18 +132,12 @@ class Generator {
 
   check(x, y, r) {
     if (this.showAuthor && this.checkCollide(x, y, r)) return false
-    return !(
-      x + r > this.canvasWidth ||
-      x - r < 0 ||
-      y + r > this.canvasHeight ||
-      y - r < 0
-    )
+    return !(x + r > this.canvasWidth || x - r < 0 || y + r > this.canvasHeight || y - r < 0)
   }
 
   checkCollide(x, y, r) {
     const abs = Math.sqrt(
-      (x - this.authorPointX) * (x - this.authorPointX) +
-        (y - this.authorPointY) * (y - this.authorPointY)
+      (x - this.authorPointX) * (x - this.authorPointX) + (y - this.authorPointY) * (y - this.authorPointY)
     )
     return abs < r + 50
   }
@@ -190,18 +164,13 @@ class Generator {
   generatePng() {
     const base64img = this.canvas.toDataURL()
     const drawImgPath = path.join(path.resolve(), `./${this.folderName}/`)
-    base64Img.img(
-      base64img,
-      drawImgPath,
-      `${Date.now()}`,
-      function (err, filepath) {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log(filepath)
-        }
+    base64Img.img(base64img, drawImgPath, `${Date.now()}`, function (err, filepath) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(filepath)
       }
-    )
+    })
   }
 }
 

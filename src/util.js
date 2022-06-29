@@ -29,11 +29,7 @@ const parseMarkDownKeyword = (markdown, types = ['code', 'strong']) => {
     if (node.type === 'code' && node.literal && types.includes('code')) {
       codeNodes.push(node)
     }
-    if (
-      node.type === 'strong' &&
-      node.firstChild._literal &&
-      types.includes('strong')
-    ) {
+    if (node.type === 'strong' && node.firstChild._literal && types.includes('strong')) {
       strongNodes.push(node)
     }
   }
@@ -46,9 +42,7 @@ const parseMarkDownKeyword = (markdown, types = ['code', 'strong']) => {
 
 const pickKeywords = filePath => {
   if (!fs.existsSync(filePath)) {
-    return redLog(
-      `${filePath} does not exist, please confirm and execute again `
-    )
+    return redLog(`${filePath} does not exist, please confirm and execute again `)
   }
   const markdown = fs.readFileSync(filePath, { encoding: 'utf8' })
   return parseMarkDownKeyword(markdown)
@@ -57,14 +51,11 @@ const pickKeywords = filePath => {
 const random = (min, max) => Math.floor(Math.random() * (max - min) + min)
 
 const calculateKeywords = (keywords, max, singleKeywordMaxLength, ctx) => {
-  const fonts = ['muyao', 'stroke', 'katong', 'maobi']
+  const fonts = ['paint', 'hollow', 'cartoon', 'brush']
   // 这里应该根据数量，大致计算出font
-  const originKeywords =
-    keywords.length > max ? keywords.splice(0, max) : keywords
+  const originKeywords = keywords.length > max ? keywords.splice(0, max) : keywords
   const handledKeywords = originKeywords.map(keyword => {
-    return keyword.length > singleKeywordMaxLength
-      ? `${keyword.substr(0, singleKeywordMaxLength)}...`
-      : keyword
+    return keyword.length > singleKeywordMaxLength ? `${keyword.substr(0, singleKeywordMaxLength)}...` : keyword
   })
 
   const applyKeywords = handledKeywords.map(keyword => {
