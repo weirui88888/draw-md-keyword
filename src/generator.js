@@ -1,7 +1,7 @@
 const path = require('path')
 const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
-const { calculateKeywords, calculateOffsetX } = require('./util')
+const { calculateKeywords, calculateOffsetX, errorLog, Log } = require('./util')
 
 const paintFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/paint.ttf')
 const hollowFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/hollow.ttf')
@@ -167,18 +167,18 @@ class Generator {
         this.generatePng()
       }
     } catch (error) {
-      console.log(error.message)
+      errorLog(error.message)
     }
   }
 
   generatePng() {
     const base64img = this.canvas.toDataURL()
     const drawImgPath = path.join(path.resolve(), `./${this.folderName}/`)
-    base64Img.img(base64img, drawImgPath, `${Date.now()}`, function (err, filepath) {
-      if (err) {
-        console.log(err)
+    base64Img.img(base64img, drawImgPath, `${Date.now()}`, function (error, filepath) {
+      if (error) {
+        errorLog(error.message)
       } else {
-        console.log(filepath)
+        Log(filepath)
       }
     })
   }

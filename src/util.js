@@ -5,17 +5,17 @@ const commonMark = require('commonMark')
 
 const keywordPadding = 10
 
-const greenLog = message => {
+const Log = message => {
   log(chalk.green(message))
 }
 
-const redLog = message => {
+const errorLog = message => {
   log(chalk.red(message))
 }
 
 const getUserConfig = path => {
   if (!fs.existsSync(path)) {
-    return redLog(`please run 'dmk init' to initialize a config file`)
+    return errorLog(`please run 'dmk init' to initialize a config file`)
   }
   return require(path)
 }
@@ -44,7 +44,7 @@ const parseMarkDownKeyword = (markdown, types = ['code', 'strong']) => {
 
 const pickKeywords = filePath => {
   if (!fs.existsSync(filePath)) {
-    return redLog(`${filePath} does not exist, please confirm and execute again `)
+    return errorLog(`${filePath} does not exist, please confirm and execute again `)
   }
   const markdown = fs.readFileSync(filePath, { encoding: 'utf8' })
   return parseMarkDownKeyword(markdown)
@@ -79,8 +79,8 @@ const calculateOffsetX = (radius, width) => {
 }
 
 exports.getUserConfig = getUserConfig
-exports.greenLog = greenLog
-exports.redLog = redLog
+exports.Log = Log
+exports.errorLog = errorLog
 exports.pickKeywords = pickKeywords
 exports.random = random
 exports.calculateKeywords = calculateKeywords
