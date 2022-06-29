@@ -11,7 +11,8 @@ const { getUserConfig, pickKeywords } = require('../src/util')
 const userDir = process.cwd()
 const program = new Command()
 const userConfigPath = path.resolve(userDir, defaultConfig.configFileName)
-program.name(pkg.name).description(pkg.version).version(pkg.version)
+
+program.name(pkg.name).description(pkg.description).version(pkg.version)
 program
   .command('init')
   .description('Initialize the generated configuration file')

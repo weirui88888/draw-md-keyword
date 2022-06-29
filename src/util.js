@@ -66,6 +66,7 @@ const calculateKeywords = (keywords, max, singleKeywordMaxLength, ctx) => {
       ? `${keyword.substr(0, singleKeywordMaxLength)}...`
       : keyword
   })
+
   const applyKeywords = handledKeywords.map(keyword => {
     const fontRandomIndex = random(0, 4)
     ctx.font = `40px ${fonts[fontRandomIndex]}`
