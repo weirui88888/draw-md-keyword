@@ -3,10 +3,10 @@ const base64Img = require("base64-img")
 const { createCanvas, registerFont } = require("canvas")
 const { calculateKeywords } = require("./util")
 
-const fontPath = path.join(process.execPath, "../../lib/node_modules/dkeyword/font/Muyao-Softbrush.ttf")
-const fontPathStroke = path.join(process.execPath, "../../lib/node_modules/dkeyword/font/stroke.ttf")
-const fontPathMaobi = path.join(process.execPath, "../../lib/node_modules/dkeyword/font/maobi.ttf")
-const fontPathKatong = path.join(process.execPath, "../../lib/node_modules/dkeyword/font/katong.ttf")
+const fontPath = path.join(process.execPath, "../../lib/node_modules/draw-md-keyword/font/Muyao-Softbrush.ttf")
+const fontPathStroke = path.join(process.execPath, "../../lib/node_modules/draw-md-keyword/font/stroke.ttf")
+const fontPathMaobi = path.join(process.execPath, "../../lib/node_modules/draw-md-keyword/font/maobi.ttf")
+const fontPathKatong = path.join(process.execPath, "../../lib/node_modules/draw-md-keyword/font/katong.ttf")
 registerFont(fontPath, {
   family: "muyao"
 })
@@ -42,7 +42,7 @@ class Generator {
     this.keywords = keywords
     this.userConfig = this.userConfig
     // user config
-    this.folderName = folderName || "dkeyword"
+    this.folderName = folderName || "dmk"
     this.max = max || 10
     this.singleKeywordMaxLength = singleKeywordMaxLength || 10
     this.author = author || ""

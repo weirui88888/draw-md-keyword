@@ -1,11 +1,24 @@
 {
-  "name": "dkeyword",
+  "name": "draw-md-keyword",
   "version": "1.0.0",
-  "description": "Generate a random style cloud map based on the input markdown file",
-  "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
+  "description": "Generates a keyword cloud with a random layout based on the markdown file path you enter",
+  "main": "./bin/dmk.js",
+  "scripts": {
+    "prettier": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/weirui88888/draw-md-keyword.git"
+  },
+  "keywords": [
+    "draw",
+    "canvas",
+    "markdown",
+    "image",
+    "canvas",
+    "commander"
+  ],
+  "author": "weirui88888",
   "license": "ISC",
   "dependencies": {
     "base64-img": "^1.0.4",
@@ -14,7 +27,10 @@
     "commander": "^9.3.0",
     "commonmark": "^0.30.0"
   },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  },
   "bin": {
-    "dk": "./bin/dk-cli.js"
+    "dmk": "./bin/dmk.js"
   }
 }

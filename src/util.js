@@ -13,7 +13,7 @@ const redLog = (message) => {
 
 const getUserConfig = (path) => {
   if (!fs.existsSync(path)) {
-    return redLog(`please run 'dk init' to initialize a config file`)
+    return redLog(`please run 'dmk init' to initialize a config file`)
   }
   return require(path)
 }
