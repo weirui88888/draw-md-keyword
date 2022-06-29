@@ -1,7 +1,7 @@
 const path = require('path')
 const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
-const { calculateKeywords, calculateOffsetX, errorLog, Log } = require('./util')
+const { calculateKeywords, calculateOffsetX, errorLog, happyLog, getMarkDownName } = require('./util')
 
 const paintFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/paint.ttf')
 const hollowFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/hollow.ttf')
@@ -37,8 +37,8 @@ class Circle {
 }
 
 class Generator {
-  constructor(keywords, userConfig) {
-    const { folderName, max, singleKeywordMaxLength, author, canvasConfig } = userConfig
+  constructor(filePath, keywords, userConfig) {
+    const { folderName, max, format, singleKeywordMaxLength, author, canvasConfig } = userConfig
     this.keywords = keywords
     this.userConfig = this.userConfig
     // user config
@@ -47,6 +47,8 @@ class Generator {
     this.singleKeywordMaxLength = singleKeywordMaxLength || 10
     this.author = author || ''
     this.fontSize = canvasConfig.fontSize || 40
+    this.format = format || 'yyyy-mm-dd'
+    this.markDownName = getMarkDownName(filePath, format)
 
     // canvas config
     this.canvas = createCanvas(canvasConfig.width, canvasConfig.height)
@@ -174,11 +176,11 @@ class Generator {
   generatePng() {
     const base64img = this.canvas.toDataURL()
     const drawImgPath = path.join(path.resolve(), `./${this.folderName}/`)
-    base64Img.img(base64img, drawImgPath, `${Date.now()}`, function (error, filepath) {
+    base64Img.img(base64img, drawImgPath, `${this.markDownName}`, function (error, filepath) {
       if (error) {
         errorLog(error.message)
       } else {
-        Log(filepath)
+        happyLog(filepath)
       }
     })
   }

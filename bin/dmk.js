@@ -30,7 +30,7 @@ program
       return errorLog(`please run 'dmk init' to initialize a config file before use [dwk draw]`)
     }
     const keywords = pickKeywords(path.resolve(userDir, filePath))
-    new Generator(keywords, getUserConfig(userConfigPath)).draw()
+    new Generator(filePath, keywords, getUserConfig(userConfigPath)).draw()
   })
 
 program.parse()

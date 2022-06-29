@@ -1,16 +1,41 @@
 const fs = require('fs')
 const chalk = require('chalk')
+const path = require('path')
 const log = console.log
 const commonMark = require('commonMark')
 
 const keywordPadding = 10
 
-const Log = message => {
+const happyLog = message => {
   log(chalk.green(message))
 }
 
 const errorLog = message => {
   log(chalk.red(message))
+}
+
+const formatDate = (date, format) => {
+  const map = {
+    mm: date.getMonth() + 1,
+    dd: date.getDate(),
+    yy: date.getFullYear().toString().slice(-2),
+    yyyy: date.getFullYear()
+  }
+
+  return format.replace(/mm|dd|(yyyy|yy)/gi, matched => {
+    return map[matched]
+  })
+}
+
+const getMarkDownName = (filePath, format) => {
+  try {
+    const fullPath = path.resolve(process.cwd(), filePath)
+    const dirnamePath = path.dirname(fullPath)
+    const markDownName = fullPath.replace(`${dirnamePath}/`, '').split('.')[0]
+    return `${formatDate(new Date(), format)}-${markDownName}`
+  } catch (error) {
+    return Date.now()
+  }
 }
 
 const getUserConfig = path => {
@@ -79,9 +104,10 @@ const calculateOffsetX = (radius, width) => {
 }
 
 exports.getUserConfig = getUserConfig
-exports.Log = Log
+exports.happyLog = happyLog
 exports.errorLog = errorLog
 exports.pickKeywords = pickKeywords
 exports.random = random
 exports.calculateKeywords = calculateKeywords
 exports.calculateOffsetX = calculateOffsetX
+exports.getMarkDownName = getMarkDownName
