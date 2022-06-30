@@ -21,12 +21,12 @@ registerFont(brushFontPath, {
 })
 
 class Circle {
-  constructor(x, y, r, keyword) {
+  constructor(x, y, r, keywordInfo) {
     this.x = x
     this.y = y
     this.r = r
-    this.c = this.getRandomColor()
-    this.keyword = keyword
+    this.color = this.getRandomColor()
+    this.k = keywordInfo
   }
   getRandomColor() {
     let r = Math.floor(Math.random() * 100) + 155
@@ -41,7 +41,6 @@ class Generator {
     const { folderName, max, format, singleKeywordMaxLength, author, canvasConfig } = userConfig
     this.keywords = keywords
     this.userConfig = this.userConfig
-    // user config
     this.folderName = folderName || 'dmk'
     this.max = max || 10
     this.singleKeywordMaxLength = singleKeywordMaxLength || 10
@@ -49,14 +48,16 @@ class Generator {
     this.fontSize = canvasConfig.fontSize || 40
     this.format = format || 'yyyy-mm-dd'
     this.markDownName = getMarkDownName(filePath, this.format)
-
-    // canvas config
     this.canvas = createCanvas(canvasConfig.width, canvasConfig.height)
     this.ctx = this.canvas.getContext('2d')
     this.canvasWidth = canvasConfig.width
     this.canvasHeight = canvasConfig.height
     this.authorPointX = canvasConfig.width - 100
     this.authorPointY = canvasConfig.height - 100
+    this.theme = canvasConfig.theme || 'light'
+    this.backgroundColor = canvasConfig.backgroundColor || false
+    this.fontColor = canvasConfig.fontColor || false
+
     this.showAuthor = !!author
     this.applyKeywords = calculateKeywords(
       this.fontSize,
@@ -65,16 +66,16 @@ class Generator {
       this.singleKeywordMaxLength,
       this.ctx
     )
-    this.circleArray = []
-    this.circleNumber = 1
+    this.circleStore = []
+    this.circleDrawedCount = 1
   }
 
   draw() {
     let n = 0
-    while (this.circleArray.length < this.applyKeywords.length) {
-      this.circleArray = []
+    while (this.circleStore.length < this.applyKeywords.length) {
+      this.circleStore = []
       let i = 0
-      while (this.circleArray.length < this.applyKeywords.length) {
+      while (this.circleStore.length < this.applyKeywords.length) {
         this.createOneCircle()
         i++
         if (i >= 1000) {
@@ -86,55 +87,71 @@ class Generator {
         break
       }
     }
-    // 根据半径从大到小画圆。
-    this.circleArray
+
+    this.setTheme()
+
+    this.circleStore
       .sort((a, b) => b.r - a.r)
-      .forEach(c => {
-        this.drawOneCircle(c)
+      .forEach(circle => {
+        this.drawOneCircle(circle)
       })
   }
 
+  setTheme() {
+    const ctx = this.ctx
+    if (this.theme === 'dark') {
+      ctx.save()
+      // this.ctx.strokeStyle = '#000000'
+      // this.ctx.rect(0, 0, this.canvasWidth, this.canvasHeight)
+      // this.ctx.stroke()
+      ctx.fillStyle = '#000000'
+      ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
+      ctx.restore()
+    }
+  }
+
   createOneCircle() {
-    let x, y, r, keyword
-    let createCircleTimes = 0
+    let randomX, randomY, randomR, drawedKeywordInfo
+    let attempts = 0
     while (true) {
-      createCircleTimes++
-      x = Math.floor(Math.random() * this.canvasWidth)
-      y = Math.floor(Math.random() * this.canvasHeight)
-      let { TR, info } = this.getR(x, y)
-      if (!TR) {
+      attempts++
+      randomX = Math.floor(Math.random() * this.canvasWidth)
+      randomY = Math.floor(Math.random() * this.canvasHeight)
+      let { circleRadius, keywordInfo } = this.getCircleRadius(randomX, randomY)
+      if (!circleRadius) {
         continue
       } else {
-        r = TR
-        keyword = info
+        randomR = circleRadius
+        drawedKeywordInfo = keywordInfo
       }
-      if (this.check(x, y, r) || createCircleTimes > 200) {
+      if (this.check(randomX, randomY, randomR) || attempts > 200) {
         break
       }
     }
-    this.check(x, y, r) && this.circleArray.push(new Circle(x, y, r, keyword))
+    this.check(randomX, randomY, randomR) &&
+      this.circleStore.push(new Circle(randomX, randomY, randomR, drawedKeywordInfo))
   }
 
   // 获取一个新圆的半径，主要判断半径与最近的一个圆的距离
-  getR(x, y) {
-    if (this.circleArray.length === 0)
+  getCircleRadius(randomX, randomY) {
+    if (this.circleStore.length === 0)
       return {
-        TR: this.applyKeywords[0].arcR,
-        info: this.applyKeywords[0]
+        circleRadius: this.applyKeywords[0].circleRadius,
+        keywordInfo: this.applyKeywords[0]
       }
-    let lenArr = this.circleArray.map(c => {
-      let xSpan = c.x - x
-      let ySpan = c.y - y
-      return Math.floor(Math.sqrt(Math.pow(xSpan, 2) + Math.pow(ySpan, 2))) - c.r
+    let distances = this.circleStore.map(circle => {
+      let xSpan = circle.x - randomX
+      let ySpan = circle.y - randomY
+      return Math.floor(Math.sqrt(Math.pow(xSpan, 2) + Math.pow(ySpan, 2))) - circle.r
     })
-    let minCircleLen = Math.min(...lenArr)
-    let minC = this.circleArray[lenArr.indexOf(minCircleLen)]
-    let tempR = this.applyKeywords[this.circleArray.length].arcR
-    let bool = tempR <= minCircleLen - minC.r
-    return bool
+    let minDistance = Math.min(...distances)
+    let minDistanceCircle = this.circleStore[distances.indexOf(minDistance)]
+    let applyRadius = this.applyKeywords[this.circleStore.length].circleRadius
+    let validRadius = applyRadius <= minDistance - minDistanceCircle.r
+    return validRadius
       ? {
-          TR: tempR,
-          info: this.applyKeywords[this.circleArray.length]
+          circleRadius: applyRadius,
+          keywordInfo: this.applyKeywords[this.circleStore.length]
         }
       : false
   }
@@ -151,21 +168,34 @@ class Generator {
     return abs < r + 50
   }
 
-  drawOneCircle(c) {
+  drawOneCircle(circle) {
     try {
       let ctx = this.ctx
-      ctx.beginPath()
-      ctx.strokeStyle = c.c
-      ctx.fillStyle = c.c
-      ctx.arc(c.x, c.y, c.r, 0, 2 * Math.PI)
-      ctx.stroke()
-      ctx.fill()
-      ctx.fillStyle = '#000000'
+      let fillTextStyle
+      ctx.save()
+      if (this.theme === 'light') {
+        ctx.beginPath()
+        ctx.fillStyle = circle.color
+        ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI)
+        ctx.stroke()
+        ctx.fill()
+      }
+      if (this.theme === 'light') {
+        fillTextStyle = '#000000'
+      } else if (this.theme === 'dark') {
+        fillTextStyle = circle.color
+      }
+      ctx.fillStyle = fillTextStyle
       ctx.textBaseline = 'top'
-      ctx.font = `${this.fontSize}px ${c.keyword.font}`
-      ctx.fillText(c.keyword.keyword, c.x - c.r + calculateOffsetX(c.r, c.keyword.width), c.y - this.fontSize / 2)
-      this.circleNumber++
-      if (this.circleNumber - 1 === this.applyKeywords.length) {
+      ctx.font = `${this.fontSize}px ${circle.k.font}`
+      ctx.fillText(
+        circle.k.keyword,
+        circle.x - circle.r + calculateOffsetX(circle.r, circle.k.width),
+        circle.y - this.fontSize / 2
+      )
+
+      this.circleDrawedCount++
+      if (this.circleDrawedCount - 1 === this.applyKeywords.length) {
         this.generatePng()
       }
     } catch (error) {

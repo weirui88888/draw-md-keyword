@@ -92,7 +92,7 @@ const calculateKeywords = (fontSize, keywords, max, singleKeywordMaxLength, ctx)
     const width = ctx.measureText(keyword).width + keywordPadding
     return {
       width,
-      arcR: width / 2,
+      circleRadius: width / 2,
       keyword,
       font: fonts[fontRandomIndex]
     }
