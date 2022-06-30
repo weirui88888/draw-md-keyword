@@ -1,7 +1,7 @@
 const path = require('path')
 const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
-const { calculateKeywords, calculateOffsetX, errorLog, happyLog, getMarkDownName } = require('./util')
+const { calculateKeywords, calculateOffsetX, errorLog, happyLog, getMarkDownName, pickUserSetting } = require('./util')
 
 const paintFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/paint.ttf')
 const hollowFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/hollow.ttf')
@@ -54,8 +54,9 @@ class Generator {
     this.canvasHeight = canvasConfig.height
     this.authorPointX = canvasConfig.width - 100
     this.authorPointY = canvasConfig.height - 100
-    this.theme = canvasConfig.theme || 'light'
-    this.align = canvasConfig || 'default'
+    this.theme = pickUserSetting(canvasConfig.theme, 'theme')
+    this.fontStyle = pickUserSetting(canvasConfig.fontStyle, 'fontStyle')
+    this.fontFamily = pickUserSetting(canvasConfig.fontFamily, 'fontFamily')
 
     this.showAuthor = !!author
     this.applyKeywords = calculateKeywords(
@@ -168,10 +169,9 @@ class Generator {
   }
 
   drawOneCircle(circle) {
+    let ctx = this.ctx
     try {
-      let ctx = this.ctx
-      let fillTextStyle
-      ctx.save()
+      let fillTextStyle = '#000000'
       if (this.theme === 'light') {
         ctx.beginPath()
         ctx.fillStyle = circle.color
@@ -179,26 +179,33 @@ class Generator {
         ctx.stroke()
         ctx.fill()
       }
-      if (this.theme === 'light') {
-        fillTextStyle = '#000000'
-      } else if (this.theme === 'dark') {
+      if (this.theme === 'dark') {
         fillTextStyle = circle.color
       }
       ctx.fillStyle = fillTextStyle
       ctx.textBaseline = 'top'
-      ctx.font = `${this.fontSize}px ${circle.k.font}`
+      const a = this.setFont(this.fontSize, circle.k.font)
+      console.log(a)
+      ctx.font = a
       ctx.fillText(
         circle.k.keyword,
         circle.x - circle.r + calculateOffsetX(circle.r, circle.k.width),
         circle.y - this.fontSize / 2
       )
-
       this.circleDrawedCount++
       if (this.circleDrawedCount - 1 === this.applyKeywords.length) {
         this.generatePng()
       }
     } catch (error) {
       errorLog(error.message)
+    }
+  }
+
+  setFont(size, font) {
+    if (this.fontStyle === 'italic') {
+      return `italic ${size}px`
+    } else {
+      return !!this.fontFamily ? `${size}px ${this.fontFamily}` : `${size}px ${font}`
     }
   }
 

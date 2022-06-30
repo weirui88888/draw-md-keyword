@@ -104,6 +104,25 @@ const calculateOffsetX = (radius, width) => {
   return radius - width / 2 + keywordPadding / 2
 }
 
+const settingMap = {
+  fontStyle: {
+    allow: ['normal', 'italic'],
+    default: 'normal'
+  },
+  fontFamily: {
+    allow: ['brush', 'cartoon', 'hollow', 'paint'],
+    default: ''
+  },
+  theme: {
+    allow: ['light', 'dark'],
+    default: 'light'
+  }
+}
+
+const pickUserSetting = (userSetting, settingKey) => {
+  return settingMap[settingKey].allow.includes(userSetting) ? userSetting : settingMap[settingKey].default
+}
+
 exports.getUserConfig = getUserConfig
 exports.happyLog = happyLog
 exports.errorLog = errorLog
@@ -112,3 +131,4 @@ exports.random = random
 exports.calculateKeywords = calculateKeywords
 exports.calculateOffsetX = calculateOffsetX
 exports.getMarkDownName = getMarkDownName
+exports.pickUserSetting = pickUserSetting
