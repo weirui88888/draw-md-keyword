@@ -1,6 +1,7 @@
 const fs = require('fs')
 const chalk = require('chalk')
 const path = require('path')
+const ora = require('ora')
 const log = console.log
 const commonMark = require('commonMark')
 
@@ -12,6 +13,18 @@ const happyLog = message => {
 
 const errorLog = message => {
   log(chalk.red(message))
+}
+
+const sleep = time => {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      res()
+    }, time * 1000)
+  })
+}
+
+const generateOra = option => {
+  return ora(option)
 }
 
 const formatDate = (date, format) => {
@@ -126,6 +139,8 @@ const pickUserSetting = (userSetting, settingKey) => {
 exports.getUserConfig = getUserConfig
 exports.happyLog = happyLog
 exports.errorLog = errorLog
+exports.sleep = sleep
+exports.generateOra = generateOra
 exports.pickKeywords = pickKeywords
 exports.random = random
 exports.calculateKeywords = calculateKeywords

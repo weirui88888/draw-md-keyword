@@ -25,7 +25,8 @@
     "canvas": "^2.9.3",
     "chalk": "^4.1.2",
     "commander": "^9.3.0",
-    "commonmark": "^0.30.0"
+    "commonmark": "^0.30.0",
+    "ora": "^5.4.1"
   },
   "devDependencies": {
     "prettier": "^2.7.1"

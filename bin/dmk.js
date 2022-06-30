@@ -11,6 +11,7 @@ const { getUserConfig, errorLog } = require('../src/util')
 
 const userDir = process.cwd()
 const program = new Command()
+
 const userConfigPath = path.resolve(userDir, defaultConfig.configFileName)
 
 program.name(pkg.name).description(pkg.description).version(pkg.version)
