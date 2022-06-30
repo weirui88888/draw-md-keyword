@@ -48,7 +48,7 @@ class Generator {
     this.author = author || ''
     this.fontSize = canvasConfig.fontSize || 40
     this.format = format || 'yyyy-mm-dd'
-    this.markDownName = getMarkDownName(filePath, format)
+    this.markDownName = getMarkDownName(filePath, this.format)
 
     // canvas config
     this.canvas = createCanvas(canvasConfig.width, canvasConfig.height)

@@ -34,6 +34,7 @@ const getMarkDownName = (filePath, format) => {
     const markDownName = fullPath.replace(`${dirnamePath}/`, '').split('.')[0]
     return `${formatDate(new Date(), format)}-${markDownName}`
   } catch (error) {
+    errorLog(error.message)
     return Date.now()
   }
 }
