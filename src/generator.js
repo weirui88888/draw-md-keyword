@@ -55,8 +55,7 @@ class Generator {
     this.authorPointX = canvasConfig.width - 100
     this.authorPointY = canvasConfig.height - 100
     this.theme = canvasConfig.theme || 'light'
-    this.backgroundColor = canvasConfig.backgroundColor || false
-    this.fontColor = canvasConfig.fontColor || false
+    this.align = canvasConfig || 'default'
 
     this.showAuthor = !!author
     this.applyKeywords = calculateKeywords(
