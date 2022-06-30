@@ -1,7 +1,15 @@
 const path = require('path')
 const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
-const { calculateKeywords, calculateOffsetX, errorLog, happyLog, getMarkDownName, pickUserSetting } = require('./util')
+const {
+  calculateKeywords,
+  calculateOffsetX,
+  errorLog,
+  happyLog,
+  getMarkDownName,
+  pickUserSetting,
+  pickKeywords
+} = require('./util')
 
 const paintFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/paint.ttf')
 const hollowFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/hollow.ttf')
@@ -37,9 +45,9 @@ class Circle {
 }
 
 class Generator {
-  constructor(filePath, keywords, userConfig) {
+  constructor(filePath, userDir, userConfig) {
     const { folderName, max, format, singleKeywordMaxLength, author, canvasConfig } = userConfig
-    this.keywords = keywords
+    this.keywords = pickKeywords(path.resolve(userDir, filePath))
     this.userConfig = this.userConfig
     this.folderName = folderName || 'dmk'
     this.max = max || 10
@@ -57,10 +65,10 @@ class Generator {
     this.theme = pickUserSetting(canvasConfig.theme, 'theme')
     this.fontStyle = pickUserSetting(canvasConfig.fontStyle, 'fontStyle')
     this.fontFamily = pickUserSetting(canvasConfig.fontFamily, 'fontFamily')
-
     this.showAuthor = !!author
     this.applyKeywords = calculateKeywords(
       this.fontSize,
+      this.fontFamily,
       this.keywords,
       this.max,
       this.singleKeywordMaxLength,
@@ -203,7 +211,7 @@ class Generator {
 
   setFont(size, font) {
     if (this.fontStyle === 'italic') {
-      return `italic ${size}px`
+      return `italic ${size}px Microsoft YaHei`
     } else {
       return !!this.fontFamily ? `${size}px ${this.fontFamily}` : `${size}px ${font}`
     }

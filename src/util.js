@@ -78,7 +78,7 @@ const pickKeywords = filePath => {
 
 const random = (min, max) => Math.floor(Math.random() * (max - min) + min)
 
-const calculateKeywords = (fontSize, keywords, max, singleKeywordMaxLength, ctx) => {
+const calculateKeywords = (fontSize, fontFamily, keywords, max, singleKeywordMaxLength, ctx) => {
   const fonts = ['paint', 'hollow', 'cartoon', 'brush']
   // 这里应该根据数量，大致计算出font
   const originKeywords = keywords.length > max ? keywords.splice(0, max) : keywords
@@ -87,7 +87,7 @@ const calculateKeywords = (fontSize, keywords, max, singleKeywordMaxLength, ctx)
   })
 
   const applyKeywords = handledKeywords.map(keyword => {
-    const fontRandomIndex = random(0, 4)
+    const fontRandomIndex = !!fontFamily ? fonts.findIndex(font => font === fontFamily) : random(0, 4)
     ctx.font = `${fontSize}px ${fonts[fontRandomIndex]}`
     const width = ctx.measureText(keyword).width + keywordPadding
     return {

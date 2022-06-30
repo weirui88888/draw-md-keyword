@@ -7,7 +7,7 @@ module.exports = {
         height: 600, // 图片高度
         fontSize: 30, // 字体的默认大小，字体越大，会使生成的云图中的关键字越少,
         theme: 'light', // light透明背景，dark黑色背景
-        fontStyle: 'normal', // normal正常字体，italic斜体（斜体会用系统默认字体）
+        fontStyle: 'normal', // normal正常字体，italic斜体（斜体会使用Microsoft YaHei）
         fontFamily: '', // 支持四种字体:brush毛笔体，cartoon卡通体，hollow镂空体，paint画刷体，如果设置后会选中设置的字体，否则会随机进行匹配
       },
       folderName:'dmk', // 生成图片的文件夹

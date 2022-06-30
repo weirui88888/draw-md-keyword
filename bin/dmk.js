@@ -7,7 +7,7 @@ const fs = require('fs')
 const defaultConfig = require('./default.config')
 const Generator = require('../src/generator')
 const { init } = require('../src/init')
-const { getUserConfig, pickKeywords, errorLog } = require('../src/util')
+const { getUserConfig, errorLog } = require('../src/util')
 
 const userDir = process.cwd()
 const program = new Command()
@@ -29,8 +29,7 @@ program
     if (!fs.existsSync(userConfigPath)) {
       return errorLog(`please run 'dmk init' to initialize a config file before use [dwk draw]`)
     }
-    const keywords = pickKeywords(path.resolve(userDir, filePath))
-    new Generator(filePath, keywords, getUserConfig(userConfigPath)).draw()
+    new Generator(filePath, userDir, getUserConfig(userConfigPath)).draw()
   })
 
 program.parse()
