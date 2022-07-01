@@ -2,8 +2,6 @@ const path = require('path')
 const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
 const {
-  supportFonts,
-  otfFontFamily,
   calculateKeywords,
   calculateOffsetX,
   errorLog,
@@ -13,11 +11,10 @@ const {
   pickKeywords,
   randomColor,
   pickHex,
-  checkBol,
-  italicFontStyle,
-  italicFontFamily,
-  italicFontWeight
+  checkBol
 } = require('./util')
+
+const { defaultFolderName, defaultFormat, canvasSetting } = require('./const')
 
 class Circle {
   constructor(x, y, r, keywordInfo) {
@@ -38,23 +35,23 @@ class Generator {
     this.setFontFamily()
     this.keywords = pickKeywords(path.resolve(userDir, filePath))
     this.userConfig = this.userConfig
-    this.folderName = folderName || 'dmk'
-    this.max = max || 10
-    this.singleKeywordMaxLength = singleKeywordMaxLength || 10
-    this.fontSize = canvasConfig.fontSize || 40
-    this.format = format || 'yyyy-mm-dd'
+    this.folderName = folderName || defaultFolderName
+    this.max = pickUserSetting(max, canvasSetting.max)
+    this.singleKeywordMaxLength = pickUserSetting(singleKeywordMaxLength, canvasSetting.singleKeywordMaxLength)
+    this.fontSize = pickUserSetting(canvasConfig.fontSize, canvasSetting.fontSize)
+    this.format = format || defaultFormat
     this.markDownName = getMarkDownName(filePath, this.format)
-    this.canvas = createCanvas(canvasConfig.width, canvasConfig.height)
+    this.canvasWidth = pickUserSetting(canvasConfig.width, canvasSetting.width)
+    this.canvasHeight = pickUserSetting(canvasConfig.height, canvasSetting.height)
+    this.authorPointX = this.canvasWidth - canvasSetting.authorWidth
+    this.authorPointY = this.canvasHeight - canvasSetting.authorHeight
+    this.canvas = createCanvas(this.canvasWidth, this.canvasHeight)
     this.ctx = this.canvas.getContext('2d')
-    this.canvasWidth = canvasConfig.width
-    this.canvasHeight = canvasConfig.height
-    this.authorPointX = canvasConfig.width - 100
-    this.authorPointY = canvasConfig.height - 100
-    this.theme = pickUserSetting(canvasConfig.theme, 'theme')
+    this.theme = pickUserSetting(canvasConfig.theme, canvasSetting.theme)
     this.themeLightFontColor = canvasConfig.themeLightFontColor
     this.themeLightBorder = checkBol(canvasConfig.themeLightBorder)
-    this.fontStyle = pickUserSetting(canvasConfig.fontStyle, 'fontStyle')
-    this.fontFamily = pickUserSetting(canvasConfig.fontFamily, 'fontFamily')
+    this.fontStyle = pickUserSetting(canvasConfig.fontStyle, canvasSetting.fontStyle)
+    this.fontFamily = pickUserSetting(canvasConfig.fontFamily, canvasSetting.fontFamily)
     this.showAuthor = checkBol(authorOption?.author)
     this.authorOption = authorOption
     this.applyKeywords = calculateKeywords({
@@ -71,8 +68,8 @@ class Generator {
   }
 
   setFontFamily() {
-    supportFonts.forEach(font => {
-      const applyFont = otfFontFamily.includes(font) ? `${font}.otf` : `${font}.ttf`
+    canvasSetting.supportFonts.forEach(font => {
+      const applyFont = canvasSetting.otfFontFamily.includes(font) ? `${font}.otf` : `${font}.ttf`
       const fontPath = path.join(process.execPath, `../../lib/node_modules/draw-md-keyword/font/${applyFont}`)
       registerFont(fontPath, {
         family: font
@@ -88,12 +85,12 @@ class Generator {
       while (this.circleStore.length < this.applyKeywords.length) {
         this.createOneCircle()
         i++
-        if (i >= 1000) {
+        if (i >= canvasSetting.attemptDrawCount) {
           break
         }
       }
       n++
-      if (n > 1000) {
+      if (n > canvasSetting.attemptDrawCount) {
         break
       }
     }
@@ -115,10 +112,10 @@ class Generator {
         const { color, family, size } = font
         const ctx = this.ctx
         ctx.beginPath()
-        ctx.textBaseline = 'top'
+        ctx.textBaseline = canvasSetting.textBaseline
         ctx.fillStyle = `${color}`
         ctx.font = `${size}px ${family}`
-        ctx.fillText(author, this.authorPointX, this.authorPointY + 50)
+        ctx.fillText(author, this.authorPointX, this.authorPointY + canvasSetting.authorOffsetY)
       } catch (error) {
         throw error
       }
@@ -127,15 +124,15 @@ class Generator {
 
   setTheme() {
     const ctx = this.ctx
-    if (this.theme === 'dark') {
+    if (this.theme === canvasSetting.themeDark) {
       ctx.save()
-      ctx.fillStyle = '#000000'
+      ctx.fillStyle = canvasSetting.black
       ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
       ctx.restore()
     } else {
       if (this.themeLightBorder) {
         ctx.save()
-        ctx.strokeStyle = '#000000'
+        ctx.strokeStyle = canvasSetting.black
         ctx.rect(0, 0, this.canvasWidth, this.canvasHeight)
         ctx.stroke()
         ctx.restore()
@@ -157,7 +154,7 @@ class Generator {
         randomR = circleRadius
         drawedKeywordInfo = keywordInfo
       }
-      if (this.check(randomX, randomY, randomR) || attempts > 200) {
+      if (this.check(randomX, randomY, randomR) || attempts > canvasSetting.attemptCreateCircle) {
         break
       }
     }
@@ -197,25 +194,25 @@ class Generator {
     const abs = Math.sqrt(
       (x - this.authorPointX) * (x - this.authorPointX) + (y - this.authorPointY) * (y - this.authorPointY)
     )
-    return abs < r + 50
+    return abs < r + canvasSetting.authorOffsetY
   }
 
   drawOneCircle(circle) {
     let ctx = this.ctx
     try {
       let fillTextStyle = pickHex(this.themeLightFontColor)
-      if (this.theme === 'light') {
+      if (this.theme === canvasSetting.themeLight) {
         ctx.beginPath()
         ctx.fillStyle = circle.color
         ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI)
         ctx.stroke()
         ctx.fill()
       }
-      if (this.theme === 'dark') {
+      if (this.theme === canvasSetting.themeDark) {
         fillTextStyle = circle.color
       }
       ctx.fillStyle = fillTextStyle
-      ctx.textBaseline = 'top'
+      ctx.textBaseline = canvasSetting.textBaseline
       ctx.font = this.setFont(this.fontSize, circle.k.font)
       ctx.fillText(
         circle.k.keyword,
@@ -232,10 +229,12 @@ class Generator {
   }
 
   setFont(size, font) {
-    if (this.fontStyle === italicFontStyle) {
-      return `${italicFontStyle} ${italicFontWeight} ${size}px ${italicFontFamily}`
+    if (this.fontStyle === canvasSetting.italicFontStyle) {
+      return `${canvasSetting.italicFontStyle} ${canvasSetting.fontWeight} ${size}px ${canvasSetting.italicFontFamily}`
     } else {
-      return !!this.fontFamily ? `normal 900 ${size}px ${this.fontFamily}` : `normal 900 ${size}px ${font}`
+      return !!this.fontFamily
+        ? `normal ${canvasSetting.fontWeight} ${size}px ${this.fontFamily}`
+        : `normal ${canvasSetting.fontWeight} ${size}px ${font}`
     }
   }
 

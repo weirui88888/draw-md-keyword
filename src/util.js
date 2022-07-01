@@ -5,12 +5,7 @@ const ora = require('ora')
 const log = console.log
 const commonMark = require('commonMark')
 
-const keywordPadding = 10
-const italicFontWeight = 900
-const italicFontStyle = 'italic'
-const italicFontFamily = 'Microsoft YaHei'
-const supportFonts = ['paint', 'hollow', 'cartoon', 'brush', 'kai', 'newYork', 'cursive']
-const otfFontFamily = ['newYork']
+const { keywordPadding, codeType, strongType, supportDrawType, canvasSetting } = require('./const')
 
 const happyLog = message => {
   log(chalk.green(message))
@@ -64,7 +59,7 @@ const getUserConfig = path => {
   return require(path)
 }
 
-const parseMarkDownKeyword = (markdown, types = ['code', 'strong']) => {
+const parseMarkDownKeyword = (markdown, types = supportDrawType) => {
   let parsed = new commonMark.Parser().parse(markdown)
   let walker = parsed.walker()
   let event
@@ -72,10 +67,10 @@ const parseMarkDownKeyword = (markdown, types = ['code', 'strong']) => {
   let strongNodes = []
   while ((event = walker.next())) {
     let node = event.node
-    if (node.type === 'code' && node.literal && types.includes('code')) {
+    if (node.type === codeType && node.literal && types.includes(codeType)) {
       codeNodes.push(node)
     }
-    if (node.type === 'strong' && node.firstChild._literal && types.includes('strong')) {
+    if (node.type === strongType && node.firstChild._literal && types.includes(strongType)) {
       strongNodes.push(node)
     }
   }
@@ -111,15 +106,23 @@ const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, sin
     return keyword.length > singleKeywordMaxLength ? `${keyword.substr(0, singleKeywordMaxLength)}...` : keyword
   })
   const applyKeywords = handledKeywords.map(keyword => {
-    const fontRandomIndex = !!fontFamily ? supportFonts.findIndex(font => font === fontFamily) : random(0, 5)
-    const applyFont = fontStyle === italicFontStyle ? italicFontFamily : supportFonts[fontRandomIndex]
+    const fontRandomIndex = !!fontFamily
+      ? canvasSetting.supportFonts.findIndex(font => font === fontFamily)
+      : random(0, 5)
+    const applyFont =
+      fontStyle === canvasSetting.italicFontStyle
+        ? canvasSetting.italicFontFamily
+        : canvasSetting.supportFonts[fontRandomIndex]
     ctx.font = `${fontSize}px ${applyFont}`
     const width = ctx.measureText(keyword).width + keywordPadding
     return {
       width,
       circleRadius: width / 2,
       keyword,
-      font: fontStyle === italicFontStyle ? italicFontFamily : supportFonts[fontRandomIndex]
+      font:
+        fontStyle === canvasSetting.italicFontStyle
+          ? canvasSetting.italicFontFamily
+          : canvasSetting.supportFonts[fontRandomIndex]
     }
   })
   return applyKeywords
@@ -131,24 +134,43 @@ const calculateOffsetX = (radius, width) => {
 
 const settingMap = {
   fontStyle: {
-    allow: ['normal', 'italic'],
-    default: 'normal'
+    allow: userSetting => canvasSetting.supportFontStyle.includes(userSetting),
+    default: canvasSetting.defaultFontStyle
   },
   fontFamily: {
-    allow: supportFonts,
+    allow: userSetting => canvasSetting.supportFonts.includes(userSetting),
     default: ''
   },
   theme: {
-    allow: ['light', 'dark'],
-    default: 'light'
+    allow: userSetting => canvasSetting.supportTheme.includes(userSetting),
+    default: canvasSetting.defaultTheme
+  },
+  max: {
+    allow: userSetting => /^\+?[1-9][0-9]*$/.test(userSetting),
+    default: canvasSetting.defaultMax
+  },
+  singleKeywordMaxLength: {
+    allow: userSetting => /^\+?[1-9][0-9]*$/.test(userSetting),
+    default: canvasSetting.defaultSingleKeywordMaxLength
+  },
+  fontSize: {
+    allow: userSetting => /^\+?[1-9][0-9]*$/.test(userSetting),
+    default: canvasSetting.defaultFontSize
+  },
+  width: {
+    allow: userSetting => /^\+?[1-9][0-9]*$/.test(userSetting),
+    default: canvasSetting.defaultCanvasWidth
+  },
+  height: {
+    allow: userSetting => /^\+?[1-9][0-9]*$/.test(userSetting),
+    default: canvasSetting.defaultCanvasHeight
   }
 }
 
 const pickUserSetting = (userSetting, settingKey) => {
-  return settingMap[settingKey].allow.includes(userSetting) ? userSetting : settingMap[settingKey].default
+  return settingMap[settingKey].allow(userSetting) ? userSetting : settingMap[settingKey].default
 }
-exports.supportFonts = supportFonts
-exports.otfFontFamily = otfFontFamily
+
 exports.getUserConfig = getUserConfig
 exports.happyLog = happyLog
 exports.errorLog = errorLog
@@ -164,6 +186,3 @@ exports.calculateKeywords = calculateKeywords
 exports.calculateOffsetX = calculateOffsetX
 exports.getMarkDownName = getMarkDownName
 exports.pickUserSetting = pickUserSetting
-exports.italicFontWeight = italicFontWeight
-exports.italicFontStyle = italicFontStyle
-exports.italicFontFamily = italicFontFamily
