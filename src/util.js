@@ -106,13 +106,9 @@ const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, sin
     return keyword.length > singleKeywordMaxLength ? `${keyword.substr(0, singleKeywordMaxLength)}...` : keyword
   })
   const applyKeywords = handledKeywords.map(keyword => {
-    const fontRandomIndex = !!fontFamily
-      ? canvasSetting.supportFonts.findIndex(font => font === fontFamily)
-      : random(0, 5)
+    const fontRandomIndex = !!fontFamily ? canvasSetting.supportFonts.findIndex(font => font === fontFamily) : random(0, 5)
     const applyFont =
-      fontStyle === canvasSetting.italicFontStyle
-        ? canvasSetting.italicFontFamily
-        : canvasSetting.supportFonts[fontRandomIndex]
+      fontStyle === canvasSetting.italicFontStyle ? canvasSetting.italicFontFamily : canvasSetting.supportFonts[fontRandomIndex]
     ctx.font = `${fontSize}px ${applyFont}`
     const width = ctx.measureText(keyword).width + keywordPadding
     return {
@@ -120,9 +116,7 @@ const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, sin
       circleRadius: width / 2,
       keyword,
       font:
-        fontStyle === canvasSetting.italicFontStyle
-          ? canvasSetting.italicFontFamily
-          : canvasSetting.supportFonts[fontRandomIndex]
+        fontStyle === canvasSetting.italicFontStyle ? canvasSetting.italicFontFamily : canvasSetting.supportFonts[fontRandomIndex]
     }
   })
   return applyKeywords

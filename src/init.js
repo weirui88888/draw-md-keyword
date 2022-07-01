@@ -12,9 +12,7 @@ const init = async (userConfigPath, configFileName) => {
   await sleep(2)
   if (fs.existsSync(userConfigPath)) {
     return initOra.succeed(
-      `[ ${configFileName} ] had already been created! you can edit it and then run ${chalk.green(
-        'dmk draw <md filePath>'
-      )}`
+      `[ ${configFileName} ] had already been created! you can edit it and then run ${chalk.green('dmk draw <md filePath>')}`
     )
   }
   fs.writeFile(userConfigPath, initConfig(), err => {
@@ -23,9 +21,7 @@ const init = async (userConfigPath, configFileName) => {
       throw err
     }
     initOra.succeed(
-      `[ ${configFileName} ] had already been created! you can edit it and then run ${chalk.green(
-        'dmk draw <md filePath>'
-      )}`
+      `[ ${configFileName} ] had already been created! you can edit it and then run ${chalk.green('dmk draw <md filePath>')}`
     )
   })
 }

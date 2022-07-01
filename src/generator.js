@@ -158,8 +158,7 @@ class Generator {
         break
       }
     }
-    this.check(randomX, randomY, randomR) &&
-      this.circleStore.push(new Circle(randomX, randomY, randomR, drawedKeywordInfo))
+    this.check(randomX, randomY, randomR) && this.circleStore.push(new Circle(randomX, randomY, randomR, drawedKeywordInfo))
   }
 
   getCircleRadius(randomX, randomY) {
@@ -191,9 +190,7 @@ class Generator {
   }
 
   checkCollide(x, y, r) {
-    const abs = Math.sqrt(
-      (x - this.authorPointX) * (x - this.authorPointX) + (y - this.authorPointY) * (y - this.authorPointY)
-    )
+    const abs = Math.sqrt((x - this.authorPointX) * (x - this.authorPointX) + (y - this.authorPointY) * (y - this.authorPointY))
     return abs < r + canvasSetting.authorOffsetY
   }
 
