@@ -34,14 +34,13 @@ class Circle {
 
 class Generator {
   constructor(filePath, userDir, userConfig) {
-    const { folderName, max, format, singleKeywordMaxLength, author, canvasConfig } = userConfig
+    const { folderName, max, format, singleKeywordMaxLength, authorOption, canvasConfig } = userConfig
     this.setFontFamily()
     this.keywords = pickKeywords(path.resolve(userDir, filePath))
     this.userConfig = this.userConfig
     this.folderName = folderName || 'dmk'
     this.max = max || 10
     this.singleKeywordMaxLength = singleKeywordMaxLength || 10
-    this.author = author || ''
     this.fontSize = canvasConfig.fontSize || 40
     this.format = format || 'yyyy-mm-dd'
     this.markDownName = getMarkDownName(filePath, this.format)
@@ -56,7 +55,8 @@ class Generator {
     this.themeLightBorder = checkBol(canvasConfig.themeLightBorder)
     this.fontStyle = pickUserSetting(canvasConfig.fontStyle, 'fontStyle')
     this.fontFamily = pickUserSetting(canvasConfig.fontFamily, 'fontFamily')
-    this.showAuthor = !!author
+    this.showAuthor = checkBol(authorOption?.author)
+    this.authorOption = authorOption
     this.applyKeywords = calculateKeywords({
       fontSize: this.fontSize,
       fontFamily: this.fontFamily,
@@ -99,12 +99,30 @@ class Generator {
     }
 
     this.setTheme()
+    this.drawAuthor()
 
     this.circleStore
       .sort((a, b) => b.r - a.r)
       .forEach(circle => {
         this.drawOneCircle(circle)
       })
+  }
+
+  drawAuthor() {
+    if (this.showAuthor) {
+      try {
+        const { author, font = {} } = this.authorOption
+        const { color, family, size } = font
+        const ctx = this.ctx
+        ctx.beginPath()
+        ctx.textBaseline = 'top'
+        ctx.fillStyle = `${color}`
+        ctx.font = `${size}px ${family}`
+        ctx.fillText(author, this.authorPointX, this.authorPointY + 50)
+      } catch (error) {
+        throw error
+      }
+    }
   }
 
   setTheme() {
@@ -147,7 +165,6 @@ class Generator {
       this.circleStore.push(new Circle(randomX, randomY, randomR, drawedKeywordInfo))
   }
 
-  // 获取一个新圆的半径，主要判断半径与最近的一个圆的距离
   getCircleRadius(randomX, randomY) {
     if (this.circleStore.length === 0)
       return {

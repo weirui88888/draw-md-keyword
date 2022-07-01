@@ -13,10 +13,18 @@ module.exports = {
         fontFamily: 'paint' // 支持六种字体:brush毛笔体，cartoon卡通体，hollow镂空体，paint画刷体，kai楷体，newYork专供英文字体，如果设置后会选中设置的字体，否则会随机进行匹配
       },
       folderName:'dmk', // 生成图片的文件夹
-      format: 'yyyy-mm-dd', // 生成图片的名称的前缀，不建议以/作为分隔符，因为生成时会将/当作特殊文件夹分隔符
+      format: 'yyyy-mm-dd', // 生成图片的名称的前缀，不建议以/作为分隔符，因为生成时会将/当作特殊文件夹分隔符，支持yy、mm、dd、yyyy随机排列
       max:10, // 最多生成包括多少个关键字的云图，超出设置的值时会随机选中10个
       singleKeywordMaxLength:10, // 单个关键词的最大长度
-      author: '', // 设置作者字段后，在生成的云图的右下角进行签名
+      // 设置作者字段后，在生成的云图的右下角进行签名
+      authorOption: {
+        author: '程序猿', // 作者名
+        font: {
+          family: 'cursive', // 字体，支持上面的几种，选择的字体可能不能完全适应你的作者名，请选择合适的
+          color: '#000000', // 字体颜色，如果在暗黑模式下，请设置正确的颜色，否则看不见～
+          size: 30 // 字体大小，注：作者绘制区域在canvas画布的右下角100*100大小，过多的字体或者过大的字体导致看不见～
+        }
+      }
     }
     module.exports = dkConfig;
     `

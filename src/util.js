@@ -9,7 +9,7 @@ const keywordPadding = 10
 const italicFontWeight = 900
 const italicFontStyle = 'italic'
 const italicFontFamily = 'Microsoft YaHei'
-const supportFonts = ['paint', 'hollow', 'cartoon', 'brush', 'kai', 'newYork']
+const supportFonts = ['paint', 'hollow', 'cartoon', 'brush', 'kai', 'newYork', 'cursive']
 const otfFontFamily = ['newYork']
 
 const happyLog = message => {
