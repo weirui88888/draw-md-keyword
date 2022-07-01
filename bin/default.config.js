@@ -7,6 +7,7 @@ module.exports = {
         height: 600, // 图片高度
         fontSize: 30, // 字体的默认大小，字体越大，会使生成的云图中的关键字越少,
         theme: 'light', // light透明背景，dark黑色背景
+        themeLightFontColor:'#000000', // theme为light情况下，绘制关键字的颜色，如果不是一个hex格式的颜色，会进行随机颜色绘制
         fontStyle: 'normal', // normal正常字体，italic斜体（斜体会使用Microsoft YaHei）
         fontFamily: '', // 支持四种字体:brush毛笔体，cartoon卡通体，hollow镂空体，paint画刷体，如果设置后会选中设置的字体，否则会随机进行匹配
       },

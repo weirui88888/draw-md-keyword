@@ -8,7 +8,12 @@ const {
   happyLog,
   getMarkDownName,
   pickUserSetting,
-  pickKeywords
+  pickKeywords,
+  randomColor,
+  pickHex,
+  italicFontStyle,
+  italicFontFamily,
+  italicFontWeight
 } = require('./util')
 
 const paintFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/paint.ttf')
@@ -37,10 +42,7 @@ class Circle {
     this.k = keywordInfo
   }
   getRandomColor() {
-    let r = Math.floor(Math.random() * 100) + 155
-    let g = Math.floor(Math.random() * 100) + 155
-    let b = Math.floor(Math.random() * 100) + 155
-    return `rgb(${r},${g},${b})`
+    return randomColor()
   }
 }
 
@@ -63,6 +65,7 @@ class Generator {
     this.authorPointX = canvasConfig.width - 100
     this.authorPointY = canvasConfig.height - 100
     this.theme = pickUserSetting(canvasConfig.theme, 'theme')
+    this.themeLightFontColor = canvasConfig.themeLightFontColor
     this.fontStyle = pickUserSetting(canvasConfig.fontStyle, 'fontStyle')
     this.fontFamily = pickUserSetting(canvasConfig.fontFamily, 'fontFamily')
     this.showAuthor = !!author
@@ -180,7 +183,8 @@ class Generator {
   drawOneCircle(circle) {
     let ctx = this.ctx
     try {
-      let fillTextStyle = '#000000'
+      let fillTextStyle = pickHex(this.themeLightFontColor)
+      console.log(fillTextStyle)
       if (this.theme === 'light') {
         ctx.beginPath()
         ctx.fillStyle = circle.color
@@ -194,7 +198,7 @@ class Generator {
       ctx.fillStyle = fillTextStyle
       ctx.textBaseline = 'top'
       const a = this.setFont(this.fontSize, circle.k.font)
-      console.log(a)
+      // console.log(a)
       ctx.font = a
       ctx.fillText(
         circle.k.keyword,
@@ -211,10 +215,10 @@ class Generator {
   }
 
   setFont(size, font) {
-    if (this.fontStyle === 'italic') {
-      return `italic ${size}px Microsoft YaHei`
+    if (this.fontStyle === italicFontStyle) {
+      return `${italicFontStyle} ${italicFontWeight} ${size}px ${italicFontFamily}`
     } else {
-      return !!this.fontFamily ? `${size}px ${this.fontFamily}` : `${size}px ${font}`
+      return !!this.fontFamily ? `normal 900 ${size}px ${this.fontFamily}` : `normal 900 ${size}px ${font}`
     }
   }
 

@@ -6,6 +6,7 @@ const log = console.log
 const commonMark = require('commonMark')
 
 const keywordPadding = 10
+const italicFontWeight = 900
 const italicFontStyle = 'italic'
 const italicFontFamily = 'Microsoft YaHei'
 const supportFonts = ['paint', 'hollow', 'cartoon', 'brush']
@@ -93,6 +94,14 @@ const pickKeywords = filePath => {
 }
 
 const random = (min, max) => Math.floor(Math.random() * (max - min) + min)
+const randomColor = () => {
+  let r = random(0, 256)
+  let g = random(0, 256)
+  let b = random(0, 256)
+  return `rgb(${r},${g},${b})`
+}
+const checkHex = hex => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex)
+const pickHex = hex => (checkHex(hex) ? hex : randomColor())
 
 const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, singleKeywordMaxLength, ctx }) => {
   const originKeywords = keywords.length > max ? keywords.splice(0, max) : keywords
@@ -144,7 +153,13 @@ exports.sleep = sleep
 exports.generateOra = generateOra
 exports.pickKeywords = pickKeywords
 exports.random = random
+exports.randomColor = randomColor
+exports.checkHex = checkHex
+exports.pickHex = pickHex
 exports.calculateKeywords = calculateKeywords
 exports.calculateOffsetX = calculateOffsetX
 exports.getMarkDownName = getMarkDownName
 exports.pickUserSetting = pickUserSetting
+exports.italicFontWeight = italicFontWeight
+exports.italicFontStyle = italicFontStyle
+exports.italicFontFamily = italicFontFamily
