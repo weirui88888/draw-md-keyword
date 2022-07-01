@@ -9,7 +9,8 @@ const keywordPadding = 10
 const italicFontWeight = 900
 const italicFontStyle = 'italic'
 const italicFontFamily = 'Microsoft YaHei'
-const supportFonts = ['paint', 'hollow', 'cartoon', 'brush']
+const supportFonts = ['paint', 'hollow', 'cartoon', 'brush', 'kai', 'newYork']
+const otfFontFamily = ['newYork']
 
 const happyLog = message => {
   log(chalk.green(message))
@@ -20,7 +21,7 @@ const errorLog = message => {
 }
 
 const sleep = time => {
-  return new Promise((res, rej) => {
+  return new Promise(res => {
     setTimeout(() => {
       res()
     }, time * 1000)
@@ -102,6 +103,7 @@ const randomColor = () => {
 }
 const checkHex = hex => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex)
 const pickHex = hex => (checkHex(hex) ? hex : randomColor())
+const checkBol = input => !!input
 
 const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, singleKeywordMaxLength, ctx }) => {
   const originKeywords = keywords.length > max ? keywords.splice(0, max) : keywords
@@ -109,7 +111,7 @@ const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, sin
     return keyword.length > singleKeywordMaxLength ? `${keyword.substr(0, singleKeywordMaxLength)}...` : keyword
   })
   const applyKeywords = handledKeywords.map(keyword => {
-    const fontRandomIndex = !!fontFamily ? supportFonts.findIndex(font => font === fontFamily) : random(0, 4)
+    const fontRandomIndex = !!fontFamily ? supportFonts.findIndex(font => font === fontFamily) : random(0, 5)
     const applyFont = fontStyle === italicFontStyle ? italicFontFamily : supportFonts[fontRandomIndex]
     ctx.font = `${fontSize}px ${applyFont}`
     const width = ctx.measureText(keyword).width + keywordPadding
@@ -133,7 +135,7 @@ const settingMap = {
     default: 'normal'
   },
   fontFamily: {
-    allow: ['brush', 'cartoon', 'hollow', 'paint'],
+    allow: supportFonts,
     default: ''
   },
   theme: {
@@ -145,7 +147,8 @@ const settingMap = {
 const pickUserSetting = (userSetting, settingKey) => {
   return settingMap[settingKey].allow.includes(userSetting) ? userSetting : settingMap[settingKey].default
 }
-
+exports.supportFonts = supportFonts
+exports.otfFontFamily = otfFontFamily
 exports.getUserConfig = getUserConfig
 exports.happyLog = happyLog
 exports.errorLog = errorLog
@@ -156,6 +159,7 @@ exports.random = random
 exports.randomColor = randomColor
 exports.checkHex = checkHex
 exports.pickHex = pickHex
+exports.checkBol = checkBol
 exports.calculateKeywords = calculateKeywords
 exports.calculateOffsetX = calculateOffsetX
 exports.getMarkDownName = getMarkDownName

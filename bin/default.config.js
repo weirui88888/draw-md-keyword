@@ -8,8 +8,9 @@ module.exports = {
         fontSize: 30, // 字体的默认大小，字体越大，会使生成的云图中的关键字越少,
         theme: 'light', // light透明背景，dark黑色背景
         themeLightFontColor:'#000000', // theme为light情况下，绘制关键字的颜色，如果不是一个hex格式的颜色，会进行随机颜色绘制
+        themeLightBorder: false, // theme为light情况下，绘制的图片是否需要边框，默认不需要
         fontStyle: 'normal', // normal正常字体，italic斜体（斜体会使用Microsoft YaHei）
-        fontFamily: '', // 支持四种字体:brush毛笔体，cartoon卡通体，hollow镂空体，paint画刷体，如果设置后会选中设置的字体，否则会随机进行匹配
+        fontFamily: 'paint' // 支持六种字体:brush毛笔体，cartoon卡通体，hollow镂空体，paint画刷体，kai楷体，newYork专供英文字体，如果设置后会选中设置的字体，否则会随机进行匹配
       },
       folderName:'dmk', // 生成图片的文件夹
       format: 'yyyy-mm-dd', // 生成图片的名称的前缀，不建议以/作为分隔符，因为生成时会将/当作特殊文件夹分隔符

@@ -2,6 +2,8 @@ const path = require('path')
 const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
 const {
+  supportFonts,
+  otfFontFamily,
   calculateKeywords,
   calculateOffsetX,
   errorLog,
@@ -11,27 +13,11 @@ const {
   pickKeywords,
   randomColor,
   pickHex,
+  checkBol,
   italicFontStyle,
   italicFontFamily,
   italicFontWeight
 } = require('./util')
-
-const paintFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/paint.ttf')
-const hollowFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/hollow.ttf')
-const brushFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/brush.ttf')
-const cartoonFontPath = path.join(process.execPath, '../../lib/node_modules/draw-md-keyword/font/cartoon.ttf')
-registerFont(paintFontPath, {
-  family: 'paint'
-})
-registerFont(hollowFontPath, {
-  family: 'hollow'
-})
-registerFont(cartoonFontPath, {
-  family: 'cartoon'
-})
-registerFont(brushFontPath, {
-  family: 'brush'
-})
 
 class Circle {
   constructor(x, y, r, keywordInfo) {
@@ -49,6 +35,7 @@ class Circle {
 class Generator {
   constructor(filePath, userDir, userConfig) {
     const { folderName, max, format, singleKeywordMaxLength, author, canvasConfig } = userConfig
+    this.setFontFamily()
     this.keywords = pickKeywords(path.resolve(userDir, filePath))
     this.userConfig = this.userConfig
     this.folderName = folderName || 'dmk'
@@ -66,6 +53,7 @@ class Generator {
     this.authorPointY = canvasConfig.height - 100
     this.theme = pickUserSetting(canvasConfig.theme, 'theme')
     this.themeLightFontColor = canvasConfig.themeLightFontColor
+    this.themeLightBorder = checkBol(canvasConfig.themeLightBorder)
     this.fontStyle = pickUserSetting(canvasConfig.fontStyle, 'fontStyle')
     this.fontFamily = pickUserSetting(canvasConfig.fontFamily, 'fontFamily')
     this.showAuthor = !!author
@@ -80,6 +68,16 @@ class Generator {
     })
     this.circleStore = []
     this.circleDrawedCount = 1
+  }
+
+  setFontFamily() {
+    supportFonts.forEach(font => {
+      const applyFont = otfFontFamily.includes(font) ? `${font}.otf` : `${font}.ttf`
+      const fontPath = path.join(process.execPath, `../../lib/node_modules/draw-md-keyword/font/${applyFont}`)
+      registerFont(fontPath, {
+        family: font
+      })
+    })
   }
 
   draw() {
@@ -113,12 +111,17 @@ class Generator {
     const ctx = this.ctx
     if (this.theme === 'dark') {
       ctx.save()
-      // this.ctx.strokeStyle = '#000000'
-      // this.ctx.rect(0, 0, this.canvasWidth, this.canvasHeight)
-      // this.ctx.stroke()
       ctx.fillStyle = '#000000'
       ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
       ctx.restore()
+    } else {
+      if (this.themeLightBorder) {
+        ctx.save()
+        ctx.strokeStyle = '#000000'
+        ctx.rect(0, 0, this.canvasWidth, this.canvasHeight)
+        ctx.stroke()
+        ctx.restore()
+      }
     }
   }
 
@@ -184,7 +187,6 @@ class Generator {
     let ctx = this.ctx
     try {
       let fillTextStyle = pickHex(this.themeLightFontColor)
-      console.log(fillTextStyle)
       if (this.theme === 'light') {
         ctx.beginPath()
         ctx.fillStyle = circle.color
@@ -197,9 +199,7 @@ class Generator {
       }
       ctx.fillStyle = fillTextStyle
       ctx.textBaseline = 'top'
-      const a = this.setFont(this.fontSize, circle.k.font)
-      // console.log(a)
-      ctx.font = a
+      ctx.font = this.setFont(this.fontSize, circle.k.font)
       ctx.fillText(
         circle.k.keyword,
         circle.x - circle.r + calculateOffsetX(circle.r, circle.k.width),
