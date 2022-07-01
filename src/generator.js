@@ -66,14 +66,15 @@ class Generator {
     this.fontStyle = pickUserSetting(canvasConfig.fontStyle, 'fontStyle')
     this.fontFamily = pickUserSetting(canvasConfig.fontFamily, 'fontFamily')
     this.showAuthor = !!author
-    this.applyKeywords = calculateKeywords(
-      this.fontSize,
-      this.fontFamily,
-      this.keywords,
-      this.max,
-      this.singleKeywordMaxLength,
-      this.ctx
-    )
+    this.applyKeywords = calculateKeywords({
+      fontSize: this.fontSize,
+      fontFamily: this.fontFamily,
+      fontStyle: this.fontStyle,
+      keywords: this.keywords,
+      max: this.max,
+      singleKeywordMaxLength: this.singleKeywordMaxLength,
+      ctx: this.ctx
+    })
     this.circleStore = []
     this.circleDrawedCount = 1
   }

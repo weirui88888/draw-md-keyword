@@ -6,6 +6,9 @@ const log = console.log
 const commonMark = require('commonMark')
 
 const keywordPadding = 10
+const italicFontStyle = 'italic'
+const italicFontFamily = 'Microsoft YaHei'
+const supportFonts = ['paint', 'hollow', 'cartoon', 'brush']
 
 const happyLog = message => {
   log(chalk.green(message))
@@ -91,23 +94,21 @@ const pickKeywords = filePath => {
 
 const random = (min, max) => Math.floor(Math.random() * (max - min) + min)
 
-const calculateKeywords = (fontSize, fontFamily, keywords, max, singleKeywordMaxLength, ctx) => {
-  const fonts = ['paint', 'hollow', 'cartoon', 'brush']
-  // 这里应该根据数量，大致计算出font
+const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, singleKeywordMaxLength, ctx }) => {
   const originKeywords = keywords.length > max ? keywords.splice(0, max) : keywords
   const handledKeywords = originKeywords.map(keyword => {
     return keyword.length > singleKeywordMaxLength ? `${keyword.substr(0, singleKeywordMaxLength)}...` : keyword
   })
-
   const applyKeywords = handledKeywords.map(keyword => {
-    const fontRandomIndex = !!fontFamily ? fonts.findIndex(font => font === fontFamily) : random(0, 4)
-    ctx.font = `${fontSize}px ${fonts[fontRandomIndex]}`
+    const fontRandomIndex = !!fontFamily ? supportFonts.findIndex(font => font === fontFamily) : random(0, 4)
+    const applyFont = fontStyle === italicFontStyle ? italicFontFamily : supportFonts[fontRandomIndex]
+    ctx.font = `${fontSize}px ${applyFont}`
     const width = ctx.measureText(keyword).width + keywordPadding
     return {
       width,
       circleRadius: width / 2,
       keyword,
-      font: fonts[fontRandomIndex]
+      font: fontStyle === italicFontStyle ? italicFontFamily : supportFonts[fontRandomIndex]
     }
   })
   return applyKeywords
