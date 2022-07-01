@@ -25,11 +25,14 @@ module.exports = {
       size: 30 // 字体大小，注：作者绘制区域在canvas画布的右下角100*100大小，过多的字体或者过大的字体导致看不见～
     }
   },
-  oss: {
-    autoUpload: false, // 开启并设置正确配置后，可在生成图片后上传阿里云，并且上传后复制到剪贴板
-    accessKey: 'xxx',
-    accessSecret: 'xxx',
-    bucket: 'xxx'
+  oss: { // 相关配置请参考 https://www.npmjs.com/package/ali-oss，只有region、accessKeyId、accessKeySecret、bucket是必须要正确填写的
+    autoUpload: false, // 开启并设置正确配置后，可在生成图片后自动上传阿里云，并且上传后复制到剪贴板，不建议直接开启，应该先看下生成的图片是否满意，在人为执行dmk oss <filepath> 进行手动上传
+    region: '',
+    accessKeyId: '',
+    accessKeySecret: '',
+    bucket: '',
+    folderName: '', // 上传图片至哪个文件夹
+    host: '' // 自定义域名
   }
 }
 module.exports = dkConfig

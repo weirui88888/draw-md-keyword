@@ -17,6 +17,13 @@
       "name": "draw",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/bin/draw.js"
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "oss",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/bin/oss.js"
     }
   ]
 }
