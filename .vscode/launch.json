@@ -24,6 +24,13 @@
       "name": "oss",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/bin/oss.js"
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "github",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/bin/github.js"
     }
   ]
 }

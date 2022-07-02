@@ -21,12 +21,15 @@
   "author": "weirui88888",
   "license": "ISC",
   "dependencies": {
+    "@octokit/core": "^3.6.0",
+    "@octokit/plugin-rest-endpoint-methods": "^5.16.0",
     "ali-oss": "^6.17.1",
     "base64-img": "^1.0.4",
     "canvas": "^2.9.3",
     "chalk": "^4.1.2",
     "commander": "^9.3.0",
     "commonmark": "^0.30.0",
+    "image-to-base64": "^2.2.0",
     "ora": "^5.4.1"
   },
   "devDependencies": {

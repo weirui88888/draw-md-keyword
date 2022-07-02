@@ -8,6 +8,7 @@ const defaultConfig = require('./default.config')
 const Generator = require('../src/generator')
 const { init } = require('../src/init')
 const OssUploader = require('../src/oss')
+const GithubUploader = require('../src/github')
 const { getUserConfig, errorLog } = require('../src/util')
 
 const userDir = process.cwd()
@@ -41,6 +42,14 @@ program
   .argument('<filePath>', 'Specify the uploaded image path')
   .action(filePath => {
     new OssUploader(filePath, userDir, getUserConfig(userConfigPath)).upload()
+  })
+
+program
+  .command('github')
+  .description('Upload the specified image to Github')
+  .argument('<filePath>', 'Specify the uploaded image path')
+  .action(filePath => {
+    new GithubUploader(filePath, userDir, getUserConfig(userConfigPath)).upload()
   })
 
 program.parse()
