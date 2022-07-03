@@ -274,9 +274,9 @@ class Generator {
         this.generatorOra.fail(error.message)
       } else {
         this.generatorOra.succeed(
-          `生成关键字图片成功，路径为${chalk.green(filepath)}，快去试试${chalk.green(
+          `生成关键字图片${chalk.green('成功')}\n路径为：\n${chalk.green(filepath)}\n快去试试\n${chalk.green(
             'draw oss <upload filepath>'
-          )}或者${chalk.green('draw github <upload filepath>')}上传图片吧`
+          )}\n或者\n${chalk.green('draw github <upload filepath>')}\n来进行上传图片吧`
         )
       }
     })

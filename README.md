@@ -29,3 +29,4 @@ TODO:
 - init 生成文件路径提示（方便直接点击编辑）
 - 是否生成后打开 vscode
 - 支持报错中文
+- chalk 简单封装，传入 type+message
