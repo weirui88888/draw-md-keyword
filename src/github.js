@@ -17,8 +17,8 @@ class GithubUploader {
       spinner: 'runner',
       text: '马不停蹄的上传中，请稍等...'
     })
-    const { personalAccesstToken = '' } = userConfig
-    this.githubOctokit = new GithubOctokit({ auth: personalAccesstToken })
+    const { personalAccessToken = '' } = userConfig
+    this.githubOctokit = new GithubOctokit({ auth: personalAccessToken })
   }
 
   async getBase64Content(uploadPath) {
