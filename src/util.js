@@ -99,6 +99,31 @@ const randomColor = () => {
 const checkHex = hex => /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hex)
 const pickHex = hex => (checkHex(hex) ? hex : randomColor())
 const checkBol = input => !!input
+const verifyParam = (config, allowNon) => {
+  const unValidKeys = []
+  for (const paramKey in config) {
+    if (!config[paramKey] && !allowNon.includes(paramKey)) {
+      unValidKeys.push(paramKey)
+    }
+  }
+  return unValidKeys
+}
+const verifyImage = url => {
+  return new Promise((res, rej) => {
+    const image = new Image()
+    image.onload = () => {
+      res({
+        valid: true
+      })
+    }
+    image.onerror = () => {
+      rej({
+        valid: false
+      })
+    }
+    image.src = url
+  })
+}
 
 const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, singleKeywordMaxLength, ctx }) => {
   const originKeywords = keywords.length > max ? keywords.splice(0, max) : keywords
@@ -200,6 +225,7 @@ const checkFileExist = filePath => {
 exports.getUserConfig = getUserConfig
 exports.happyLog = happyLog
 exports.errorLog = errorLog
+exports.log = log
 exports.sleep = sleep
 exports.generateOra = generateOra
 exports.pickKeywords = pickKeywords
@@ -208,6 +234,8 @@ exports.randomColor = randomColor
 exports.checkHex = checkHex
 exports.pickHex = pickHex
 exports.checkBol = checkBol
+exports.verifyParam = verifyParam
+exports.verifyImage = verifyImage
 exports.calculateKeywords = calculateKeywords
 exports.calculateOffsetX = calculateOffsetX
 exports.getMarkDownName = getMarkDownName

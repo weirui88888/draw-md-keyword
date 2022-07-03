@@ -59,7 +59,7 @@ class OssUploader {
     }
   }
 
-  async handle(res) {
+  handle(res) {
     const { name, url } = res
     if (res.res.statusCode === 200) {
       if (this.host) {

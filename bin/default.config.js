@@ -41,8 +41,8 @@ module.exports = {
     owner: '', // github用户名
     repo: '', // github仓库名，任意仓库都可以上传，但建议利用gh-pages当作自己的服务器，可方便存储预览
     branch: '', // 分支名，如果利用gh-pages功能的话，这里使用gh-pages
-    path: '', // 图片路径 形如images/xxx.png
-    message: '' //commit提交信息
+    imgPath: '' // 图片路径，任意合理的路径都可以，比如images，图片会被上传到images/xxx.png，比如images/dmk，图片会被上传到images/dmk/xxx.png
+    customDomain: '', // 自定义域名，生效的前提是你上传的仓库名是形如owner.github.io，这里的owner就是你上面添加的github用户名，并且上面配置的branch为gh-pages，还有就是你配置了自己的域名，不展开陈述了，不会设置的去参考上上网相关的资料
   }
 }
 module.exports = dkConfig

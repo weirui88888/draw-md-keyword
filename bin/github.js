@@ -8,4 +8,4 @@ function execute(cmd) {
     }
   })
 }
-execute('./bin/dmk.js github ./dmk/2022-7-2-a.png')
+execute('./bin/dmk.js github ./dmk/2022-7-3-TEST.png')

@@ -60,7 +60,7 @@ program
   .argument('<filePath>', 'Specify the uploaded image path')
   .action(filePath => {
     if (!userConfigExist) return errorLog(commandSettingMap[commandGithub][commandTip])
-    new GithubUploader(filePath, userDir, getUserConfig(userConfigPath)).upload()
+    new GithubUploader(filePath, userDir, userConfigPath, getUserConfig(userConfigPath)).upload()
   })
 
 program.parse()
