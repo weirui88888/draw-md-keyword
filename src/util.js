@@ -165,6 +165,38 @@ const pickUserSetting = (userSetting, settingKey) => {
   return settingMap[settingKey].allow(userSetting) ? userSetting : settingMap[settingKey].default
 }
 
+const commandInit = 'init'
+const commandDraw = 'draw'
+const commandOss = 'oss'
+const commandGithub = 'github'
+const commandTip = 'tip'
+const commandKey = 'key'
+const commandSettingMap = {
+  [commandInit]: {
+    [commandKey]: commandInit
+  },
+  [commandDraw]: {
+    [commandKey]: commandDraw,
+    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk draw]"
+  },
+  [commandOss]: {
+    [commandKey]: commandOss,
+    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk oss]"
+  },
+  [commandGithub]: {
+    [commandKey]: commandGithub,
+    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk github]"
+  }
+}
+
+const checkFileExist = filePath => {
+  try {
+    return fs.existsSync(filePath)
+  } catch (error) {
+    return false
+  }
+}
+
 exports.getUserConfig = getUserConfig
 exports.happyLog = happyLog
 exports.errorLog = errorLog
@@ -180,3 +212,11 @@ exports.calculateKeywords = calculateKeywords
 exports.calculateOffsetX = calculateOffsetX
 exports.getMarkDownName = getMarkDownName
 exports.pickUserSetting = pickUserSetting
+exports.checkFileExist = checkFileExist
+exports.commandSettingMap = commandSettingMap
+exports.commandTip = commandTip
+exports.commandKey = commandKey
+exports.commandInit = commandInit
+exports.commandDraw = commandDraw
+exports.commandOss = commandOss
+exports.commandGithub = commandGithub

@@ -9,46 +9,57 @@ const Generator = require('../src/generator')
 const { init } = require('../src/init')
 const OssUploader = require('../src/oss')
 const GithubUploader = require('../src/github')
-const { getUserConfig, errorLog } = require('../src/util')
+const {
+  getUserConfig,
+  errorLog,
+  checkFileExist,
+  commandKey,
+  commandTip,
+  commandSettingMap,
+  commandInit,
+  commandDraw,
+  commandOss,
+  commandGithub
+} = require('../src/util')
 
 const userDir = process.cwd()
 const program = new Command()
 
 const userConfigPath = path.resolve(userDir, defaultConfig.configFileName)
+const userConfigExist = checkFileExist(userConfigPath)
 
 program.name(pkg.name).description(pkg.description).version(pkg.version)
 program
-  .command('init')
+  .command(commandSettingMap[commandInit][commandKey])
   .description('Initialize the generated configuration file')
   .action(() => {
     init(userConfigPath, defaultConfig.configFileName)
   })
 
 program
-  .command('draw')
+  .command(commandSettingMap[commandDraw][commandKey])
   .description('Randomly output cloud images based on your input file')
   .argument('<filePath>', 'Keyword cloud map will be automatically generated according to the configuration file')
   .action(filePath => {
-    // TODO:移到Generator里面
-    if (!fs.existsSync(userConfigPath)) {
-      return errorLog(`please run 'dmk init' to initialize a config file before use [dwk draw]`)
-    }
+    if (!userConfigExist) return errorLog(commandSettingMap[commandDraw][commandTip])
     new Generator(filePath, userDir, getUserConfig(userConfigPath)).draw()
   })
 
 program
-  .command('oss')
+  .command(commandSettingMap[commandOss][commandKey])
   .description('Upload the specified image to Aliyun')
   .argument('<filePath>', 'Specify the uploaded image path')
   .action(filePath => {
+    if (!userConfigExist) return errorLog(commandSettingMap[commandOss][commandTip])
     new OssUploader(filePath, userDir, getUserConfig(userConfigPath)).upload()
   })
 
 program
-  .command('github')
+  .command(commandSettingMap[commandGithub][commandKey])
   .description('Upload the specified image to Github')
   .argument('<filePath>', 'Specify the uploaded image path')
   .action(filePath => {
+    if (!userConfigExist) return errorLog(commandSettingMap[commandGithub][commandTip])
     new GithubUploader(filePath, userDir, getUserConfig(userConfigPath)).upload()
   })
 
