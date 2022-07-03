@@ -25,7 +25,8 @@ module.exports = {
       size: 30 // 字体大小，注：作者绘制区域在canvas画布的右下角100*100大小，过多的字体或者过大的字体导致看不见～
     }
   },
-  oss: { // 相关配置请参考 https://www.npmjs.com/package/ali-oss，只有region、accessKeyId、accessKeySecret、bucket是必须要正确填写的
+  // 支持一键上传oss，相关配置请参考 https://www.npmjs.com/package/ali-oss，只有region、accessKeyId、accessKeySecret、bucket是必须要正确填写
+  oss: { 
     autoUpload: false, // 开启并设置正确配置后，可在生成图片后自动上传阿里云，并且上传后复制到剪贴板，不建议直接开启，应该先看下生成的图片是否满意，在人为执行dmk oss <filepath> 进行手动上传
     region: '',
     accessKeyId: '',
@@ -33,6 +34,15 @@ module.exports = {
     bucket: '',
     folderName: '', // 上传图片至哪个文件夹
     host: '' // 自定义域名
+  },
+  // 支持一键上传github，可以利用gh-pages实现个人关键字图集库，方便后期使用
+  github: {
+    personalAccessToken: '',
+    owner: '', // github用户名
+    repo: '', // github仓库名，任意仓库都可以上传，但建议利用gh-pages当作自己的服务器，可方便存储预览
+    branch: '', // 分支名，如果利用gh-pages功能的话，这里使用gh-pages
+    path: '', // 图片路径 形如images/xxx.png
+    message: '' //commit提交信息
   }
 }
 module.exports = dkConfig
