@@ -1,18 +1,19 @@
 const path = require('path')
 const base64Img = require('base64-img')
 const { createCanvas, registerFont } = require('canvas')
+const chalk = require('chalk')
 const {
   calculateKeywords,
   calculateOffsetX,
-  errorLog,
-  happyLog,
   getMarkDownName,
   pickUserSetting,
   pickKeywords,
   randomColor,
   pickHex,
   checkBol,
-  calculateMainAuthorPoint
+  calculateMainAuthorPoint,
+  generateOra,
+  sleep
 } = require('./util')
 
 const { defaultFolderName, defaultFormat, canvasSetting } = require('./const')
@@ -34,6 +35,9 @@ class Generator {
   constructor(filePath, userDir, userConfig) {
     const { folderName, max, format, singleKeywordMaxLength, authorOption, canvasConfig } = userConfig
     this.setFontFamily()
+    this.generatorOra = generateOra({
+      spinner: 'soccerHeader'
+    })
     this.keywords = pickKeywords(path.resolve(userDir, filePath))
     this.userConfig = this.userConfig
     this.folderName = folderName || defaultFolderName
@@ -84,7 +88,9 @@ class Generator {
     })
   }
 
-  draw() {
+  async draw() {
+    this.generatorOra.start('马不停蹄的计算有效绘制中，请稍等...')
+    await sleep(2)
     let n = 0
     while (this.circleStore.length < this.applyKeywords.length) {
       this.circleStore = []
@@ -240,7 +246,7 @@ class Generator {
         this.generatePng()
       }
     } catch (error) {
-      errorLog(error.message)
+      this.generatorOra.fail(error.message)
     }
   }
 
@@ -257,11 +263,15 @@ class Generator {
   generatePng() {
     const base64img = this.canvas.toDataURL()
     const drawImgPath = path.join(path.resolve(), `./${this.folderName}/`)
-    base64Img.img(base64img, drawImgPath, `${this.markDownName}`, function (error, filepath) {
+    base64Img.img(base64img, drawImgPath, `${this.markDownName}`, (error, filepath) => {
       if (error) {
-        errorLog(error.message)
+        this.generatorOra.fail(error.message)
       } else {
-        happyLog(filepath)
+        this.generatorOra.succeed(
+          `生成关键字图片成功，路径为${chalk.green(filepath)}，快去试试${chalk.green(
+            'draw oss <upload filepath>'
+          )}或者${chalk.green('draw github <upload filepath>')}上传图片吧`
+        )
       }
     })
   }
