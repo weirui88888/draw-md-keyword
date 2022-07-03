@@ -222,6 +222,41 @@ const checkFileExist = filePath => {
   }
 }
 
+const calculateMainAuthorPoint = (authorPointX, authorPointY, authorWidth, authorHeight) => {
+  const pointTopLeft = [authorPointX, authorPointY]
+  const pointTopCenter = [authorPointX + authorWidth / 2, authorPointY]
+  const pointTopRight = [authorPointX + authorWidth, authorPointY]
+
+  const pointMiddleLeft = [authorPointX, authorPointY + authorHeight / 2]
+  const pointMiddleCenter = [authorPointX + authorWidth / 2, authorPointY + authorHeight / 2]
+  const pointMiddleRight = [authorPointX + authorWidth, authorPointY + authorHeight / 2]
+
+  const pointBottomLeft = [authorPointX, authorPointY + authorHeight]
+  const pointBottomCenter = [authorPointX + authorWidth / 2, authorPointY + authorHeight]
+  const pointBottomRight = [authorPointX + authorWidth, authorPointY + authorHeight]
+
+  const pointBlockTopLeft = [authorPointX + authorWidth / 4, authorPointY + authorHeight / 4]
+  const pointBlockTopRight = [authorPointX + (authorWidth / 4) * 3, authorPointY + authorHeight / 4]
+
+  const pointBlockBottomLeft = [authorPointX + authorWidth / 4, authorPointY + (authorHeight / 4) * 3]
+  const pointBlockBottomRight = [authorPointX + (authorWidth / 4) * 3, authorPointY + (authorHeight / 4) * 3]
+  return [
+    pointTopLeft,
+    pointTopCenter,
+    pointTopRight,
+    pointMiddleLeft,
+    pointMiddleCenter,
+    pointMiddleRight,
+    pointBottomLeft,
+    pointBottomCenter,
+    pointBottomRight,
+    pointBlockTopLeft,
+    pointBlockTopRight,
+    pointBlockBottomLeft,
+    pointBlockBottomRight
+  ]
+}
+
 exports.getUserConfig = getUserConfig
 exports.happyLog = happyLog
 exports.errorLog = errorLog
@@ -241,6 +276,7 @@ exports.calculateOffsetX = calculateOffsetX
 exports.getMarkDownName = getMarkDownName
 exports.pickUserSetting = pickUserSetting
 exports.checkFileExist = checkFileExist
+exports.calculateMainAuthorPoint = calculateMainAuthorPoint
 exports.commandSettingMap = commandSettingMap
 exports.commandTip = commandTip
 exports.commandKey = commandKey

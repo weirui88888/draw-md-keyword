@@ -11,7 +11,8 @@ const {
   pickKeywords,
   randomColor,
   pickHex,
-  checkBol
+  checkBol,
+  calculateMainAuthorPoint
 } = require('./util')
 
 const { defaultFolderName, defaultFormat, canvasSetting } = require('./const')
@@ -53,6 +54,12 @@ class Generator {
     this.fontStyle = pickUserSetting(canvasConfig.fontStyle, canvasSetting.fontStyle)
     this.fontFamily = pickUserSetting(canvasConfig.fontFamily, canvasSetting.fontFamily)
     this.showAuthor = checkBol(authorOption?.author)
+    this.mainAuthorPoints = calculateMainAuthorPoint(
+      this.authorPointX,
+      this.authorPointY,
+      canvasSetting.authorWidth,
+      canvasSetting.authorHeight
+    )
     this.authorOption = authorOption
     this.applyKeywords = calculateKeywords({
       fontSize: this.fontSize,
@@ -116,6 +123,8 @@ class Generator {
         ctx.fillStyle = `${color}`
         ctx.font = `${size}px ${family}`
         ctx.fillText(author, this.authorPointX, this.authorPointY + canvasSetting.authorOffsetY)
+        // ctx.beginPath()
+        // ctx.strokeRect(this.authorPointX, this.authorPointY, canvasSetting.authorWidth, canvasSetting.authorHeight)
       } catch (error) {
         throw error
       }
@@ -188,10 +197,20 @@ class Generator {
     if (this.showAuthor && this.checkCollide(x, y, r)) return false
     return !(x + r > this.canvasWidth || x - r < 0 || y + r > this.canvasHeight || y - r < 0)
   }
-
+  // TODO:待优化的地方，如何判断一个圆，不与右下角绘制作者的区域重叠,现在是采关键点进行判断
   checkCollide(x, y, r) {
-    const abs = Math.sqrt((x - this.authorPointX) * (x - this.authorPointX) + (y - this.authorPointY) * (y - this.authorPointY))
-    return abs < r + canvasSetting.authorOffsetY
+    let collide = false
+    for (let i = 0; i < this.mainAuthorPoints.length; i++) {
+      this.ctx.beginPath()
+      this.ctx.arc(x, y, r, 0, 2 * Math.PI)
+      const authorMainPointInPath = this.ctx.isPointInPath(this.mainAuthorPoints[i][0], this.mainAuthorPoints[i][1])
+      if (authorMainPointInPath) {
+        collide = true
+        break
+      }
+    }
+
+    return collide
   }
 
   drawOneCircle(circle) {
