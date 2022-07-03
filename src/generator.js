@@ -89,7 +89,13 @@ class Generator {
   }
 
   async draw() {
-    this.generatorOra.start('马不停蹄的计算有效绘制中，请稍等...')
+    this.generatorOra.start(
+      `\n马不停蹄的${chalk.green('计算有效绘制')}中，请稍等...\n如果足球长时间停止不动了\n那么大概率本次绘制任务${chalk.red(
+        '失败'
+      )}了，\n请关闭终端后在配置文件中适当${chalk.green('调整画布大小')}，\n或者设置合理的${chalk.green(
+        '最大关键字生成数量'
+      )}，\n当然也可以将绘制${chalk.green('字体大小')}适当的减小后再次执行 ${chalk.green('[dwk draw <md filePath>]')}`
+    )
     await sleep(2)
     let n = 0
     while (this.circleStore.length < this.applyKeywords.length) {
