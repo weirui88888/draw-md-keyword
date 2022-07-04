@@ -8,4 +8,4 @@ function execute(cmd) {
     }
   })
 }
-execute('./bin/dmk.js draw TEST.md')
+execute('./bin/dmk.js draw a.md')

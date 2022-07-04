@@ -193,21 +193,42 @@ const commandOss = 'oss'
 const commandGithub = 'github'
 const commandTip = 'tip'
 const commandKey = 'key'
+const commandFileUnExistTip = 'fileUnExist'
+const commandFileExtName = 'extName'
+const commandFileExtNameUnAllowTip = 'extNameUnAllow'
 const commandSettingMap = {
   [commandInit]: {
     [commandKey]: commandInit
   },
   [commandDraw]: {
     [commandKey]: commandDraw,
-    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk draw]"
+    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk draw]",
+    [commandFileUnExistTip]: path => `${path} does not exist, please confirm and execute again`,
+    [commandFileExtName]: ['md', 'MD'],
+    [commandFileExtNameUnAllowTip]: path =>
+      `${path} does not match this command, please confirm and execute again, ${chalk.green(
+        'dwk draw command only supports extname with md or MD'
+      )}`
   },
   [commandOss]: {
     [commandKey]: commandOss,
-    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk oss]"
+    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk oss]",
+    [commandFileUnExistTip]: path => `${path} does not exist, please confirm and execute again`,
+    [commandFileExtName]: ['png'],
+    [commandFileExtNameUnAllowTip]: path =>
+      `${path} does not match this command, please confirm and execute again, ${chalk.green(
+        'dwk oss command only supports extname with png'
+      )}`
   },
   [commandGithub]: {
     [commandKey]: commandGithub,
-    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk github]"
+    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk github]",
+    [commandFileUnExistTip]: path => `${path} does not exist, please confirm and execute again`,
+    [commandFileExtName]: ['png'],
+    [commandFileExtNameUnAllowTip]: path =>
+      `${path} does not match this command, please confirm and execute again, ${chalk.green(
+        'dwk github command only supports extname with png'
+      )}`
   }
 }
 
@@ -276,6 +297,9 @@ exports.checkFileExist = checkFileExist
 exports.calculateMainAuthorPoint = calculateMainAuthorPoint
 exports.commandSettingMap = commandSettingMap
 exports.commandTip = commandTip
+exports.commandFileUnExistTip = commandFileUnExistTip
+exports.commandFileExtName = commandFileExtName
+exports.commandFileExtNameUnAllowTip = commandFileExtNameUnAllowTip
 exports.commandKey = commandKey
 exports.commandInit = commandInit
 exports.commandDraw = commandDraw
