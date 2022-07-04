@@ -14,6 +14,9 @@ class GithubUploader {
     this.inputPath = inputPath
     this.userDir = userDir
     this.userConfigPath = userConfigPath
+    this.githubOra = generateOra({
+      spinner: 'runner'
+    })
     const {
       github = {
         personalAccessToken: '',
@@ -33,9 +36,6 @@ class GithubUploader {
       imgPath,
       customDomain
     }
-    this.githubOra = generateOra({
-      spinner: 'runner'
-    })
     this.githubOctokit = new GithubOctokit({ auth: this.github.personalAccessToken })
   }
 
@@ -44,7 +44,7 @@ class GithubUploader {
   }
 
   async upload() {
-    const unValidKeys = verifyParam(this.github, 'customDomain')
+    const unValidKeys = verifyParam(this.github, ['customDomain'])
     if (unValidKeys.length === 0) {
       const uploadPath = path.resolve(this.userDir, this.inputPath)
       const dirnamePath = path.dirname(uploadPath)

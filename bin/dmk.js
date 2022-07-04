@@ -57,7 +57,7 @@ program
       commandKey: commandOss,
       configFileName
     })
-    valid && new OssUploader(filePath, userDir, getUserConfig(userConfigPath)).upload()
+    valid && new OssUploader(filePath, userDir, userConfigPath, getUserConfig(userConfigPath)).upload()
   })
 
 program
