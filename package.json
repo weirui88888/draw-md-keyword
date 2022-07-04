@@ -1,7 +1,7 @@
 {
   "name": "draw-md-keyword",
   "version": "1.0.0",
-  "description": "Generates a keyword cloud with a random layout based on the markdown file path you enter",
+  "description": "Generates a keyword cloud with a random layout based on the markdown file path you enter,Support a variety of custom configurations, support one-click upload to github and oss",
   "main": "./bin/dmk.js",
   "scripts": {
     "prettier": "prettier --write ."
@@ -16,9 +16,22 @@
     "markdown",
     "image",
     "canvas",
-    "commander"
+    "commander",
+    "ora",
+    "chalk",
+    "upload oss",
+    "upload github"
   ],
-  "author": "weirui88888",
+  "author": "weirui88888 <ruiwei88888@163.com> (https://hexo.newarray.vip)",
+  "bugs": "https://github.com/weirui88888/draw-md-keyword/issues",
+  "homepage": "https://www.npmjs.com/package/monitor-event-emitter",
+  "contributors": [
+    {
+      "name": "weirui88888",
+      "email": "ruiwei88888@163.com",
+      "url": "https://hexo.newarray.vip"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
     "@octokit/core": "^3.6.0",
