@@ -46,7 +46,7 @@ class GithubUploader {
   async upload() {
     const unValidKeys = verifyParam(this.github, 'customDomain')
     if (unValidKeys.length === 0) {
-      const uploadPath = path.join(this.userDir, this.inputPath)
+      const uploadPath = path.resolve(this.userDir, this.inputPath)
       const dirnamePath = path.dirname(uploadPath)
       const imageName = uploadPath.replace(`${dirnamePath}/`, '')
       if (!fs.existsSync(uploadPath)) {
@@ -57,7 +57,7 @@ class GithubUploader {
         )
       }
       const { owner, repo, imgPath, branch } = this.github
-      const uploadRepoPath = path.join(imgPath, imageName)
+      const uploadRepoPath = path.resolve(imgPath, imageName)
       const message = `:tada:dmk generated ${imageName}`
       this.githubOra.start(`马不停蹄的${chalk.green('编码')}中，请稍等...`)
       const content = await this.getBase64Content(uploadPath)

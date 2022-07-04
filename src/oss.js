@@ -39,7 +39,7 @@ class OssUploader {
   async upload() {
     this.ossOra.start()
     await sleep(2)
-    const uploadPath = path.join(this.userDir, this.inputPath)
+    const uploadPath = path.resolve(this.userDir, this.inputPath)
     if (!fs.existsSync(uploadPath)) {
       return this.ossOra.fail(
         `according to your input, the image is not found, please use the command again ${chalk.green(
