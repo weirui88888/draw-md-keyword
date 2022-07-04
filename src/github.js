@@ -57,7 +57,7 @@ class GithubUploader {
         )
       }
       const { owner, repo, imgPath, branch } = this.github
-      const uploadRepoPath = path.resolve(imgPath, imageName)
+      const uploadRepoPath = path.join(imgPath, imageName)
       const message = `:tada:dmk generated ${imageName}`
       this.githubOra.start(`马不停蹄的${chalk.green('编码')}中，请稍等...`)
       const content = await this.getBase64Content(uploadPath)
@@ -138,9 +138,9 @@ class GithubUploader {
           })
           .catch(() => {
             this.githubOra.warn(
-              `图片已上传github，但是看起来你设置的github自定义域名${chalk.red(
+              `图片已上传github\n但是看起来你设置的github自定义域名${chalk.red(
                 host
-              )}貌似有点问题，不过你仍然可以进行访问: ${chalk.green(download_url)}`
+              )}貌似有点问题\n不过你仍然可以进行访问: ${chalk.green(download_url)}`
             )
           })
       } else {

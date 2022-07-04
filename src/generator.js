@@ -90,7 +90,9 @@ class Generator {
 
   async draw() {
     this.generatorOra.start(
-      `\n马不停蹄的${chalk.green('计算有效绘制')}中，请稍等...\n如果足球长时间停止不动了\n那么大概率本次绘制任务${chalk.red(
+      `\n马不停蹄的${chalk.green(
+        '计算有效绘制'
+      )}中，请稍等...\n如果足球长时间停止不动了(6秒左右)\n那么大概率本次绘制任务${chalk.red(
         '失败'
       )}了，\n请关闭终端后在配置文件中适当${chalk.green('调整画布大小')}，\n或者设置合理的${chalk.green(
         '最大关键字生成数量'
@@ -274,9 +276,9 @@ class Generator {
         this.generatorOra.fail(error.message)
       } else {
         this.generatorOra.succeed(
-          `生成关键字图片${chalk.green('成功')}\n路径为：\n${chalk.green(filepath)}\n快去试试\n${chalk.green(
+          `生成关键字图片${chalk.green('成功')}\n路径为：\n${chalk.green(filepath)}\n快去试试 ${chalk.green(
             'draw oss <upload filepath>'
-          )}\n或者\n${chalk.green('draw github <upload filepath>')}\n来进行上传图片吧`
+          )} 或者 ${chalk.green('draw github <upload filepath>')} 来上传图片吧`
         )
       }
     })
