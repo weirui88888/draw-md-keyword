@@ -12,6 +12,7 @@ module.exports = {
     fontStyle: 'normal', // normal正常字体，italic斜体（斜体会使用Microsoft YaHei）
     fontFamily: 'paint' // 支持六种字体:brush毛笔体，cartoon卡通体，hollow镂空体，paint画刷体，kai楷体，newYork专供英文字体，如果设置后会选中设置的字体，否则会随机进行匹配
   },
+  copyAble: true,
   folderName: 'dmk', // 生成图片的文件夹
   format: 'yyyy-mm-dd', // 生成图片的名称的前缀，不建议以/作为分隔符，因为生成时会将/当作特殊文件夹分隔符，支持yy、mm、dd、yyyy随机排列
   max: 10, // 最多生成包括多少个关键字的云图，超出设置的值时会随机选中10个

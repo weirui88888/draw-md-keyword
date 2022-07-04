@@ -7,6 +7,7 @@ const { restEndpointMethods } = require('@octokit/plugin-rest-endpoint-methods')
 const { generateOra, verifyParam, verifyImage } = require('./util')
 const GithubOctokit = Octokit.plugin(restEndpointMethods)
 const imageToBase64 = require('image-to-base64')
+const ncp = require('copy-paste')
 global.Image = canvas.Image
 
 class GithubUploader {
@@ -25,7 +26,8 @@ class GithubUploader {
         branch: '',
         imgPath: '',
         customDomain: ''
-      }
+      },
+      copyAble = true
     } = userConfig
     const { personalAccessToken, owner, repo, branch, imgPath, customDomain } = github
     this.github = {
@@ -36,6 +38,7 @@ class GithubUploader {
       imgPath,
       customDomain
     }
+    this.copyAble = copyAble
     this.githubOctokit = new GithubOctokit({ auth: this.github.personalAccessToken })
   }
 
@@ -82,7 +85,7 @@ class GithubUploader {
           content,
           sha
         })
-        this.handle(res)
+        this.handle(res, imageName)
       } else {
         this.githubOra.start(`马不停蹄的${chalk.green('上传')}中，请稍等...`)
         const res = await this.githubOctokit.rest.repos.createOrUpdateFileContents({
@@ -93,7 +96,7 @@ class GithubUploader {
           message,
           content
         })
-        this.handle(res)
+        this.handle(res, imageName)
       }
     } else {
       const tip = unValidKeys.reduce((acc, cur, index) => {
@@ -121,7 +124,7 @@ class GithubUploader {
     }
   }
 
-  handle(res) {
+  handle(res, imageName) {
     const {
       status,
       data: {
@@ -134,17 +137,49 @@ class GithubUploader {
         const hostUrl = `${host}/${path}`
         verifyImage(hostUrl)
           .then(() => {
-            this.githubOra.succeed(`图片已上传github，访问地址为: ${chalk.green(hostUrl)}`)
+            if (this.copyAble) {
+              ncp.copy(`![${imageName}](${hostUrl})`, () => {
+                this.githubOra.succeed(
+                  `图片已上传github，访问地址为: ${chalk.green(hostUrl)}\n并且已经为你按照markdown图片格式复制到${chalk.green(
+                    '剪贴板'
+                  )}中，快去使用吧`
+                )
+              })
+            } else {
+              this.githubOra.succeed(`图片已上传github，访问地址为: ${chalk.green(hostUrl)}`)
+            }
           })
           .catch(() => {
-            this.githubOra.warn(
-              `图片已上传github\n但是看起来你设置的github自定义域名${chalk.red(
-                host
-              )}貌似有点问题\n不过你仍然可以进行访问: ${chalk.green(download_url)}`
-            )
+            if (this.copyAble) {
+              ncp.copy(`![${imageName}](${download_url})`, () => {
+                this.githubOra.warn(
+                  `图片已上传github\n但是看起来使用你设置的github自定义域名${chalk.red(
+                    host
+                  )}访问图片貌似有点问题\n不过你仍然可以进行访问: ${chalk.green(
+                    download_url
+                  )}\n并且已经为你按照markdown图片格式复制到${chalk.green('剪贴板')}中，快去使用吧`
+                )
+              })
+            } else {
+              this.githubOra.warn(
+                `图片已上传github\n但是看起来使用你设置的github自定义域名${chalk.red(
+                  host
+                )}访问图片貌似有点问题\n不过你仍然可以进行访问: ${chalk.green(download_url)}`
+              )
+            }
           })
       } else {
-        this.githubOra.succeed(`图片已上传github，访问地址为: ${chalk.green(download_url)}`)
+        if (this.copyAble) {
+          ncp.copy(`![${imageName}](${download_url})`, () => {
+            this.githubOra.succeed(
+              `图片已上传github，访问地址为: ${chalk.green(download_url)}\n并且已经为你按照markdown图片格式复制到${chalk.green(
+                '剪贴板'
+              )}中，快去使用吧`
+            )
+          })
+        } else {
+          this.githubOra.succeed(`图片已上传github，访问地址为: ${chalk.green(download_url)}`)
+        }
       }
     } else {
       // TODO:错误提示示例以及解释
