@@ -25,7 +25,7 @@ class GithubUploader {
       }
     } = userConfig
     const { personalAccessToken, owner, repo, branch, imgPath, customDomain } = github
-    this.requireParam = {
+    this.github = {
       personalAccessToken,
       owner,
       repo,
@@ -36,7 +36,7 @@ class GithubUploader {
     this.githubOra = generateOra({
       spinner: 'runner'
     })
-    this.githubOctokit = new GithubOctokit({ auth: this.requireParam.personalAccessToken })
+    this.githubOctokit = new GithubOctokit({ auth: this.github.personalAccessToken })
   }
 
   async getBase64Content(uploadPath) {
@@ -44,7 +44,7 @@ class GithubUploader {
   }
 
   async upload() {
-    const unValidKeys = verifyParam(this.requireParam, 'customDomain')
+    const unValidKeys = verifyParam(this.github, 'customDomain')
     if (unValidKeys.length === 0) {
       const uploadPath = path.join(this.userDir, this.inputPath)
       const dirnamePath = path.dirname(uploadPath)
@@ -56,7 +56,7 @@ class GithubUploader {
           )}`
         )
       }
-      const { owner, repo, imgPath, branch } = this.requireParam
+      const { owner, repo, imgPath, branch } = this.github
       const uploadRepoPath = path.join(imgPath, imageName)
       const message = `:tada:dmk generated ${imageName}`
       this.githubOra.start(`马不停蹄的${chalk.green('编码')}中，请稍等...`)
@@ -129,7 +129,7 @@ class GithubUploader {
       }
     } = res
     if (status === 200 || status === 201) {
-      const host = this.requireParam.customDomain
+      const host = this.github.customDomain
       if (host) {
         const hostUrl = `${host}/${path}`
         verifyImage(hostUrl)

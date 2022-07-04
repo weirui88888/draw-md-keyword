@@ -82,9 +82,6 @@ const parseMarkDownKeyword = (markdown, types = supportDrawType) => {
 }
 
 const pickKeywords = filePath => {
-  if (!fs.existsSync(filePath)) {
-    return errorLog(`${filePath} does not exist, please confirm and execute again `)
-  }
   const markdown = fs.readFileSync(filePath, { encoding: 'utf8' })
   return parseMarkDownKeyword(markdown)
 }

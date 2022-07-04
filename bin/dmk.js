@@ -42,6 +42,8 @@ program
   .argument('<filePath>', 'Keyword cloud map will be automatically generated according to the configuration file')
   .action(filePath => {
     if (!userConfigExist) return errorLog(commandSettingMap[commandDraw][commandTip])
+    const drawedFilePath = path.join(userDir, filePath)
+    if (!fs.existsSync(drawedFilePath)) return errorLog(`${drawedFilePath} does not exist, please confirm and execute again `)
     new Generator(filePath, userDir, getUserConfig(userConfigPath)).draw()
   })
 
