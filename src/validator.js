@@ -48,7 +48,7 @@ class Validator {
   }
 
   verifyExtName(filePath) {
-    const extname = path.extname(filePath)
+    const extname = path.extname(filePath).split('.')[1]
     return this.allowExtNames.includes(extname)
   }
 }
