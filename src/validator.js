@@ -6,20 +6,23 @@ const {
   commandFileUnExistTip,
   commandFileExtNameUnAllowTip,
   commandFileExtName,
-  commandSettingMap
+  commandSettingMap,
+  commandVerify,
+  commandAccessAllowKey,
+  commandTypeUnMatchTip
 } = require('./util')
 
 class Validator {
-  constructor({ commandKey, filePath, configFileName, extName }) {
+  constructor({ commandKey, filePath = '', configFileName, verifiedType }) {
     this.commandKey = commandKey
     this.userDir = process.cwd()
     this.filePath = filePath
     this.configFileName = configFileName
-    this.extName = extName
+    this.verifyAccessType = verifiedType
     this.allowExtNames = commandSettingMap[this.commandKey][commandFileExtName]
     this.userConfigPath = path.resolve(this.userDir, this.configFileName)
     this.fileTypePath = path.resolve(this.userDir, this.filePath)
-    this.valid = this.validate()
+    this.valid = commandKey === commandVerify ? this.verifyAccess() : this.validate()
   }
 
   validate() {
@@ -34,6 +37,19 @@ class Validator {
     }
     if (!this.verifyFileExist(this.fileTypePath)) {
       errorLog(commandSettingMap[this.commandKey][commandFileUnExistTip](this.fileTypePath))
+      valid = false
+    }
+    return valid
+  }
+
+  verifyAccess() {
+    let valid = true
+    if (!this.verifyFileExist(this.userConfigPath)) {
+      errorLog(commandSettingMap[this.commandKey][commandTip])
+      valid = false
+    }
+    if (!commandSettingMap[this.commandKey][commandAccessAllowKey].includes(this.verifyAccessType)) {
+      errorLog(commandSettingMap[this.commandKey][commandTypeUnMatchTip])
       valid = false
     }
     return valid

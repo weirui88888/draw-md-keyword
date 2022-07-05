@@ -191,6 +191,9 @@ const commandInit = 'init'
 const commandDraw = 'draw'
 const commandOss = 'oss'
 const commandGithub = 'github'
+const commandVerify = 'verify'
+const commandAccessAllowKey = 'accessAllowKey'
+const commandTypeUnMatchTip = 'accessTypeUnAllow'
 const commandTip = 'tip'
 const commandKey = 'key'
 const commandFileUnExistTip = 'fileUnExist'
@@ -229,6 +232,12 @@ const commandSettingMap = {
       `${path} does not match this command, please confirm and execute again, ${chalk.green(
         'dwk github command only supports extname with png'
       )}`
+  },
+  [commandVerify]: {
+    [commandKey]: commandVerify,
+    [commandTip]: "Please run 'dmk init' to initialize a config file before use [dwk access]",
+    [commandAccessAllowKey]: ['oss', 'github'],
+    [commandTypeUnMatchTip]: 'type param only support oss or github'
   }
 }
 
@@ -305,3 +314,6 @@ exports.commandInit = commandInit
 exports.commandDraw = commandDraw
 exports.commandOss = commandOss
 exports.commandGithub = commandGithub
+exports.commandVerify = commandVerify
+exports.commandAccessAllowKey = commandAccessAllowKey
+exports.commandTypeUnMatchTip = commandTypeUnMatchTip

@@ -4,11 +4,12 @@ const { Command } = require('commander')
 const path = require('path')
 const pkg = require('../package.json')
 const defaultConfig = require('./default.config')
-const Generator = require('../src/generator')
 const { init } = require('../src/init')
+const Generator = require('../src/generator')
 const OssUploader = require('../src/oss')
 const GithubUploader = require('../src/github')
 const Validator = require('../src/validator')
+const Access = require('../src/access')
 const {
   getUserConfig,
   commandKey,
@@ -16,7 +17,8 @@ const {
   commandInit,
   commandDraw,
   commandOss,
-  commandGithub
+  commandGithub,
+  commandVerify
 } = require('../src/util')
 
 const userDir = process.cwd()
@@ -71,6 +73,19 @@ program
       configFileName
     })
     valid && new GithubUploader(filePath, userDir, userConfigPath, getUserConfig(userConfigPath)).upload()
+  })
+
+program
+  .command(commandSettingMap[commandVerify][commandKey])
+  .description('Verify permission before uploading images to oss or github')
+  .argument('<verifiedType>', 'The type to be validated，support "oss" or "github"')
+  .action(verifiedType => {
+    const { valid } = new Validator({
+      verifiedType,
+      commandKey: commandVerify,
+      configFileName
+    })
+    valid && new Access(verifiedType, userDir, userConfigPath, getUserConfig(userConfigPath)).verify()
   })
 
 program.parse()

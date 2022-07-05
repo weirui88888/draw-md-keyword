@@ -47,6 +47,14 @@ class GithubUploader {
   }
 
   async upload() {
+    try {
+      await this.githubOctokit.rest.users.getAuthenticated()
+    } catch (error) {
+      this.githubOra.fail(
+        `😭 看起来你设置的personalAccessToken有点问题，请重新生成及配置后再次尝试\n配置路径:${this.userConfigPath}`
+      )
+      return
+    }
     const unValidKeys = verifyParam(this.github, ['customDomain'])
     if (unValidKeys.length === 0) {
       const uploadPath = path.resolve(this.userDir, this.inputPath)

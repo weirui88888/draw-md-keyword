@@ -14,8 +14,7 @@ class OssUploader {
     this.userDir = userDir
     this.userConfigPath = userConfigPath
     this.ossOra = generateOra({
-      spinner: 'runner',
-      text: `马不停蹄的${chalk.green('上传')}中，请稍等...`
+      spinner: 'runner'
     })
     const {
       oss = {
@@ -59,7 +58,7 @@ class OssUploader {
     if (!this.validOssAccess) return
     const unValidKeys = verifyParam(this.oss, ['host', 'folderName'])
     if (unValidKeys.length === 0) {
-      this.ossOra.start()
+      this.ossOra.start(`马不停蹄的${chalk.green('上传')}中，请稍等...`)
       await sleep(2)
       const uploadPath = path.resolve(this.userDir, this.inputPath)
       if (!fs.existsSync(uploadPath)) {
