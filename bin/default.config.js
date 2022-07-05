@@ -28,7 +28,6 @@ module.exports = {
   },
   // 支持一键上传oss，相关配置请参考 https://www.npmjs.com/package/ali-oss，只有region、accessKeyId、accessKeySecret、bucket是必须要正确填写
   oss: { 
-    autoUpload: false, // 开启并设置正确配置后，可在生成图片后自动上传阿里云，并且上传后复制到剪贴板，不建议直接开启，应该先看下生成的图片是否满意，在人为执行dmk oss <filepath> 进行手动上传
     region: '',
     accessKeyId: '',
     accessKeySecret: '',
