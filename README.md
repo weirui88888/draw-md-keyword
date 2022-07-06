@@ -1,5 +1,6 @@
 <h2 align="center">一款可以一键生成关键词云图的小工具</h2>
 <p align="center"><img src="https://img.shields.io/badge/npm-%40v1.0.0-yellow"/> <img src="https://img.shields.io/badge/node-command-brightgreen"/> <img src="https://img.shields.io/badge/canvas-draw-orange"/></p>
+
 下面这张包含本篇 README.md 关键词云图和作者签名的图片，就是使用该工具库一键生成后上传到阿里云上，来作为该 README.md 的封面图的。
 
 <p align="center"><img src="https://show.newarray.vip/blog/dmk-show.png"/></p>
@@ -16,7 +17,7 @@
 
 ## 简介
 
-这是一款可以根据用户输入的文件路径自动一键解析文件中关键词，然后随机生成一张关键词图片的工具，灵感借鉴于[前端如何实现骨架屏](https://github.com/famanoder/dps)方案。
+这是一款可以根据用户输入的文件路径自动一键解析文件中关键词，然后随机生成一张关键词图片的工具，灵感借鉴于[前端如何实现骨架屏](https://github.com/famanoder/dps)文章。
 
 同时为了能够满足不同场景下的用户需求，你还可以通过简单的参数配置，赋予它高可定制化的能力。于此同时，为了降低用户的使用成本，配置文件默认**不需要**经过任何配置即可实现一键生成关键词图片
 
