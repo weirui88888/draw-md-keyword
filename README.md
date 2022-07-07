@@ -33,7 +33,7 @@
 - 支持设置字体大小
 - 支持设置最大关键词数量
 - 支持黑+白的主题模式
-- 支持多种字体
+- 支持自定义字体，目前支持手绘风格 zh 和英文圆润字体 en
 - 支持各种文件夹命名格式
 - 支持设置图片右下角作者签名
 - ...
@@ -131,7 +131,7 @@ module.exports = {
     themeLightFontColor: '#000000', // theme为light情况下，绘制关键词的颜色，如果不是一个hex格式的颜色，会进行随机颜色绘制
     themeLightBorder: true, // theme为light情况下，绘制的图片是否需要边框，默认需要
     fontStyle: 'normal', // normal正常字体，italic斜体（斜体会使用Microsoft YaHei）
-    fontFamily: 'paint' // 支持七种字体：brush毛笔体，cartoon卡通体，hollow镂空体，paint画刷体，kai楷体，cursive草书，newYork专供英文字体，如果设置后会选中设置的字体，否则会随机进行匹配
+    fontFamily: 'zh' // 目前支持中英文两种字体，zh为中文手绘体，en为圆润英文字体，如果设置后会选中设置的字体，否则会随机进行匹配
   },
   copyAble: true,// 是否需要在上传图片后，帮你自动复制md图片格式到剪贴板中，方便你粘贴使用
   folderName: 'dmk', // 生成图片的文件夹名称
@@ -142,7 +142,7 @@ module.exports = {
   authorOption: {
     author: 'weirui88888', // 作者名
     font: {
-      family: 'cursive', // 字体，支持上面的几种，选择的字体可能不能完全适应你的作者名，请选择合适的
+      family: 'zh', // 同上，当前支持zh和en
       color: '#000000', // 字体颜色，如果在暗黑模式下，请设置正确的颜色，否则看不见～
       size: 18 // 字体大小，注：作者绘制区域在canvas画布的右下角100*100大小，过多的字体或者过大的字体导致看不见～
     }

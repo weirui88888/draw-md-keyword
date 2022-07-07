@@ -37,7 +37,7 @@ const canvasSetting = {
   black: '#000000',
   italicFontStyle: 'italic',
   italicFontFamily: 'Microsoft YaHei',
-  supportFonts: ['paint'],
+  supportFonts: ['zh', 'en'],
   otfFontFamily: [],
   supportFontStyle: ['normal', 'italic'],
   defaultFontStyle: 'normal',
