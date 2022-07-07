@@ -13,7 +13,7 @@
 
 有了这个想法之后，我便陷入了茶不思饭不想的困境中...
 
-在经历了一个多礼拜时长，60 次代码提交以及 1500 行有效代码实现后，它诞生了...
+在经历了一个多礼拜时长，60 余次代码提交以及 1500 行有效代码实现后，它诞生了...
 
 ## 简介
 
@@ -106,13 +106,13 @@ dmk verify github
 
 ## 命令
 
-| 支持的命令 |                                       命令阐述                                       |
-| :--------: | :----------------------------------------------------------------------------------: |
-|  dmk init  |               生成默认配置可用的配置文件，用户自定义配置全在这里面设置               |
-|  dmk draw  | 基于你输入的 md 格式的文件路径和你的自定义配置生成一张随机样式且包含文件关键词的图片 |
-|  dmk oss   |        基于你输入的 png 格式的图片路径和你的自定义配置上传图片到阿里云 oss 上        |
-| dmk github |      基于你输入的 png 格式的图片路径和你的自定义配置上传图片到阿里云 github 上       |
-| dmk verify | 校验你在配置文件中关于上传图片的一些参数设置项是否正确，也就是你设置的 token 对不对  |
+| 支持的命令 |     参数      |                                       命令阐述                                       |
+| :--------: | :-----------: | :----------------------------------------------------------------------------------: |
+|  dmk init  |      无       |               生成默认配置可用的配置文件，用户自定义配置全在这里面设置               |
+|  dmk draw  |  md-filepath  | 基于你输入的 md 格式的文件路径和你的自定义配置生成一张随机样式且包含文件关键词的图片 |
+|  dmk oss   | png-filepath  |        基于你输入的 png 格式的图片路径和你的自定义配置上传图片到阿里云 oss 上        |
+| dmk github | png-filepath  |      基于你输入的 png 格式的图片路径和你的自定义配置上传图片到阿里云 github 上       |
+| dmk verify | oss \| github | 校验你在配置文件中关于上传图片的一些参数设置项是否正确，也就是你设置的 token 对不对  |
 
 ## 配置文件
 
@@ -231,4 +231,4 @@ module.exports = dkConfig
 
 ## 参与
 
-[![](https://img.shields.io/badge/github-@issue-green.svg?logo=github)](https://github.com/weirui88888/draw-md-keyword/issues) [![](https://img.shields.io/badge/github-@pr-green.svg?logo=github)](https://github.com/weirui88888/draw-md-keyword/pulls)
+[![](https://show.newarray.vip/blog/github-%40issue-green.svg?logo=github)](https://github.com/weirui88888/draw-md-keyword/issues) [![](https://show.newarray.vip/blog/github-%40pr-green.svg?logo=github)](https://github.com/weirui88888/draw-md-keyword/pulls)
