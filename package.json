@@ -1,11 +1,17 @@
 {
   "name": "draw-md-keyword",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generates a keyword cloud with a random layout based on the markdown file path you enter,Support a variety of custom configurations, support one-click upload to github and oss",
   "main": "./bin/dmk.js",
   "scripts": {
     "prettier": "prettier --write ."
   },
+  "files": [
+    "src",
+    "font",
+    "dmk",
+    "bin"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/weirui88888/draw-md-keyword.git"
