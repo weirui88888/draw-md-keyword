@@ -1,6 +1,6 @@
 {
   "name": "draw-md-keyword",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generates a keyword cloud with a random layout based on the markdown file path you enter,Support a variety of custom configurations, support one-click upload to github and oss",
   "main": "./bin/dmk.js",
   "scripts": {

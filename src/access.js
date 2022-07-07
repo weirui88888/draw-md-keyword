@@ -81,9 +81,9 @@ class Access {
       }
     } catch (error) {
       this.accessOra.fail(
-        `😭 看起来你的oss配置有点问题，请修改后后再次尝试\n配置路径:${this.userConfigPath}\n报错信息为：${chalk.red(
-          error.message
-        )}\n配置路径:${this.userConfigPath}`
+        `😭 看起来你的oss配置有点问题，请修改后后再次尝试\n报错信息为：${chalk.red(error.message)}\n配置路径:${
+          this.userConfigPath
+        }`
       )
     }
   }

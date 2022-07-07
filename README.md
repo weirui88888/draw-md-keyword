@@ -1,5 +1,5 @@
 <h2 align="center">一款可以一键生成关键词云图的小工具</h2>
-<p align="center"><img src="https://img.shields.io/badge/npm-%40v1.0.0-yellow"/> <img src="https://img.shields.io/badge/node-command-brightgreen"/> <img src="https://img.shields.io/badge/canvas-draw-orange"/></p>
+<p align="center"><a href="https://www.npmjs.com/package/draw-md-keyword"><img src="https://img.shields.io/badge/npm-%40v1.0.0-yellow"/></a> <img src="https://img.shields.io/badge/node-command-brightgreen"/> <img src="https://img.shields.io/badge/canvas-draw-orange"/></p>
 
 下面这张包含本篇 README.md 关键词云图和作者签名的图片，就是使用该工具库一键生成后上传到阿里云上，来作为该 README.md 的封面图的。
 
@@ -247,3 +247,5 @@ dmk < github | oss > ./xxx/xxx.png
 ## 参与
 
 [![](https://show.newarray.vip/blog/github-%40issue-green.svg?logo=github)](https://github.com/weirui88888/draw-md-keyword/issues) [![](https://show.newarray.vip/blog/github-%40pr-green.svg?logo=github)](https://github.com/weirui88888/draw-md-keyword/pulls)
+
+<!-- https://www.npmjs.com/package/draw-md-keyword -->
