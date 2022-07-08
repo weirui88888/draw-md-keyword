@@ -1,4 +1,4 @@
-<h2 align="center">一款可以基于markdown文件生成文件中关键词云图的小工具</h2>
+<h2 align="center">一款可以基于markdown内容生成文件中关键词云图的小工具</h2>
 <p align="center"><a href="https://www.npmjs.com/package/draw-md-keyword"><img src="https://img.shields.io/badge/npm-%40v1.0.2-yellow"/></a> <img src="https://img.shields.io/badge/node-command-brightgreen"/> <img src="https://img.shields.io/badge/canvas-draw-orange"/></p>
 
 *Tip:npm 全局安装的时候，最好使用其它源，比如taobao，或者cnpm，直接跳转[如何安装使用](https://github.com/weirui88888/draw-md-keyword#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8)*
