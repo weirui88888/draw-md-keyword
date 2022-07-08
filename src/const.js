@@ -47,7 +47,15 @@ const canvasSetting = {
   defaultSingleKeywordMaxLength: 10,
   defaultFontSize: 40,
   defaultCanvasWidth: 800,
-  defaultCanvasHeight: 400
+  defaultCanvasHeight: 400,
+  // windowControl
+  windowControl: {
+    color: ['#ff5f56', '#ffbd2e', '#27c97f'],
+    radius: 8,
+    distance: 6,
+    offsetX: 10,
+    offsetY: 10
+  }
 }
 
 module.exports = {

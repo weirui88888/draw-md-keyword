@@ -55,8 +55,7 @@ class Generator {
     this.theme = pickUserSetting(canvasConfig.theme, canvasSetting.theme)
     this.themeLightFontColor = canvasConfig.themeLightFontColor
     this.themeLightBorder = checkBol(canvasConfig.themeLightBorder)
-    // 支持暗黑圆角 radius
-    this.themeDarkRadius = true
+    this.windowControl = checkBol(canvasConfig.windowControl)
     this.fontStyle = pickUserSetting(canvasConfig.fontStyle, canvasSetting.fontStyle)
     this.fontFamily = pickUserSetting(canvasConfig.fontFamily, canvasSetting.fontFamily)
     this.showAuthor = checkBol(authorOption?.author)
@@ -182,6 +181,23 @@ class Generator {
     ctx.restore()
   }
 
+  drawWindowControl() {
+    const { color, radius, distance, offsetX, offsetY } = canvasSetting.windowControl
+    const ctx = this.ctx
+    for (let i = 0; i < color.length; i++) {
+      ctx.beginPath()
+      ctx.fillStyle = color[i]
+      if (i === 0) {
+        ctx.arc(offsetX + radius, offsetY + radius, radius, 0, 2 * Math.PI)
+      } else if (i === 1) {
+        ctx.arc(offsetX + radius * 3 + distance, offsetY + radius, radius, 0, 2 * Math.PI)
+      } else if (i === 2) {
+        ctx.arc(offsetX + radius * 5 + distance * 2, offsetY + radius, radius, 0, 2 * Math.PI)
+      }
+      ctx.fill()
+    }
+  }
+
   setTheme() {
     const ctx = this.ctx
     if (this.theme === canvasSetting.themeDark) {
@@ -291,6 +307,7 @@ class Generator {
       )
       this.circleDrawedCount++
       if (this.circleDrawedCount - 1 === this.applyKeywords.length) {
+        this.windowControl && this.drawWindowControl()
         this.generatePng()
       }
     } catch (error) {

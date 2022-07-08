@@ -10,7 +10,8 @@ module.exports = {
     themeLightFontColor: '#000000', // theme为light情况下，绘制关键字的颜色，如果不是一个hex格式的颜色，会进行随机颜色绘制
     themeLightBorder: true, // theme为light情况下，绘制的图片是否需要边框，默认不需要
     fontStyle: 'normal', // normal正常字体，italic斜体（斜体会使用Microsoft YaHei）
-    fontFamily: 'zh' // 目前支持中英文两种字体，zh为中文手绘体，en为圆润英文字体，如果设置后会选中设置的字体，否则会随机进行匹配
+    fontFamily: 'zh', // 目前支持中英文两种字体，zh为中文手绘体，en为圆润英文字体，如果设置后会选中设置的字体，否则会随机进行匹配
+    windowControl: true, // 是否需要仿mac终端左上角三个按钮
   },
   copyAble: true,
   folderName: 'dmk', // 图片生成后放入哪个文件夹
