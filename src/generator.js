@@ -24,7 +24,7 @@ class Circle {
     this.y = y
     this.r = r
     this.color = this.getRandomColor()
-    this.k = keywordInfo
+    this.keywordInfo = keywordInfo
   }
   getRandomColor() {
     return randomColor()
@@ -55,6 +55,8 @@ class Generator {
     this.theme = pickUserSetting(canvasConfig.theme, canvasSetting.theme)
     this.themeLightFontColor = canvasConfig.themeLightFontColor
     this.themeLightBorder = checkBol(canvasConfig.themeLightBorder)
+    // 支持暗黑圆角 radius
+    this.themeDarkRadius = true
     this.fontStyle = pickUserSetting(canvasConfig.fontStyle, canvasSetting.fontStyle)
     this.fontFamily = pickUserSetting(canvasConfig.fontFamily, canvasSetting.fontFamily)
     this.showAuthor = checkBol(authorOption?.author)
@@ -145,6 +147,41 @@ class Generator {
     }
   }
 
+  // 绘制圆角矩形
+  setDarkRadiusRect(x, y, width, height, r, lineWidth, color) {
+    const ctx = this.ctx
+    ctx.save()
+    ctx.beginPath()
+    ctx.lineWidth = lineWidth
+    // 1
+    ctx.moveTo(x + r, y + lineWidth)
+    ctx.lineTo(x + width - r, y + lineWidth)
+    // 2
+    ctx.moveTo(x + r, y + height - lineWidth)
+    ctx.lineTo(x + width - r, y + height - lineWidth)
+    // 3
+    ctx.moveTo(x + lineWidth, y + r)
+    ctx.lineTo(x + lineWidth, y + height - r)
+    // 4
+    ctx.moveTo(x + width - lineWidth, y + r)
+    ctx.lineTo(x + width - lineWidth, y + height - r)
+    // 5
+    ctx.moveTo(x + r, y + lineWidth)
+    ctx.arcTo(x + lineWidth, y + lineWidth, x + lineWidth, y + r, r - lineWidth)
+    // 6
+    ctx.moveTo(x + width - r, y + lineWidth)
+    ctx.arcTo(x + width - lineWidth, y + lineWidth, x + width - lineWidth, y + r, r - lineWidth)
+    // 7
+    ctx.moveTo(x + lineWidth, y + height - r)
+    ctx.arcTo(x + lineWidth, y + height - lineWidth, x + r, y + height - lineWidth, r - lineWidth)
+    // 8
+    ctx.moveTo(x + width - r, y + height - lineWidth)
+    ctx.arcTo(x + width - lineWidth, y + height - lineWidth, x + width - lineWidth, y + height - r, r - lineWidth)
+    ctx.strokeStyle = color || '#ffffff'
+    ctx.stroke()
+    ctx.restore()
+  }
+
   setTheme() {
     const ctx = this.ctx
     if (this.theme === canvasSetting.themeDark) {
@@ -152,6 +189,9 @@ class Generator {
       ctx.fillStyle = canvasSetting.black
       ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
       ctx.restore()
+      // if (this.themeDarkRadius) {
+      //   this.setDarkRadiusRect(0, 0, this.canvasWidth, this.canvasHeight, 50, 20, '#ffffff')
+      // }
     } else {
       if (this.themeLightBorder) {
         ctx.save()
@@ -243,10 +283,10 @@ class Generator {
       }
       ctx.fillStyle = fillTextStyle
       ctx.textBaseline = canvasSetting.textBaseline
-      ctx.font = this.setFont(this.fontSize, circle.k.font)
+      ctx.font = this.setFont(this.fontSize, circle.keywordInfo.font)
       ctx.fillText(
-        circle.k.keyword,
-        circle.x - circle.r + calculateOffsetX(circle.r, circle.k.width),
+        circle.keywordInfo.keyword,
+        circle.x - circle.r + calculateOffsetX(circle.r, circle.keywordInfo.width),
         circle.y - this.fontSize / 2
       )
       this.circleDrawedCount++
