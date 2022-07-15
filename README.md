@@ -5,7 +5,7 @@ _Tip:npm 全局安装的时候，最好使用其它源，比如 taobao，或者 
 
 下面这张包含本篇 README.md 关键词云图和作者签名的图片，就是使用该工具库一键生成后上传到阿里云上，来作为该 README.md 的封面图的。
 
-<p align="center"><img src="https://show.newarray.vip/blog/dmk-show.png"/></p>
+<p align="center"><img src="https://show.newarray.vip/blog/dmk-show-v3.png"/></p>
 
 ## 背景
 
