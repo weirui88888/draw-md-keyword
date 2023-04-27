@@ -128,7 +128,8 @@ const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, sin
     return keyword.length > singleKeywordMaxLength ? `${keyword.substr(0, singleKeywordMaxLength)}...` : keyword
   })
   const applyKeywords = handledKeywords.map(keyword => {
-    const fontRandomIndex = !!fontFamily ? canvasSetting.supportFonts.findIndex(font => font === fontFamily) : random(0, 5)
+    // 找到应用的font-family,如果添加字体之后，需要改变random(0,n)中的n，其中n就是你支持的字体的种类数量
+    const fontRandomIndex = !!fontFamily ? canvasSetting.supportFonts.findIndex(font => font === fontFamily) : random(0, 1)
     const applyFont =
       fontStyle === canvasSetting.italicFontStyle ? canvasSetting.italicFontFamily : canvasSetting.supportFonts[fontRandomIndex]
     ctx.font = `${fontSize}px ${applyFont}`
@@ -137,8 +138,7 @@ const calculateKeywords = ({ fontSize, fontFamily, fontStyle, keywords, max, sin
       width,
       circleRadius: width / 2,
       keyword,
-      font:
-        fontStyle === canvasSetting.italicFontStyle ? canvasSetting.italicFontFamily : canvasSetting.supportFonts[fontRandomIndex]
+      font: applyFont
     }
   })
   return applyKeywords

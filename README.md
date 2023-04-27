@@ -133,18 +133,19 @@ module.exports = {
     themeLightFontColor: '#000000', // theme为light情况下，绘制关键词的颜色，如果不是一个hex格式的颜色，会进行随机颜色绘制
     themeLightBorder: true, // theme为light情况下，绘制的图片是否需要边框，默认需要
     fontStyle: 'normal', // normal正常字体，italic斜体（斜体会使用Microsoft YaHei）
-    fontFamily: 'zh' // 目前支持中英文两种字体，zh为中文手绘体，en为圆润英文字体，如果设置后会选中设置的字体，否则会随机进行匹配
+    fontFamily: 'en', // 目前支持中英文两种字体，zh为中文手绘体，en为圆润英文字体，如果设置后会选中设置的字体，否则会随机进行匹配(为了缩小体积包，已经去除中文字体包，只支持en)
+    windowControl: true // 是否需要仿mac终端左上角三个按钮
   },
   copyAble: true,// 是否需要在上传图片后，帮你自动复制md图片格式到剪贴板中，方便你粘贴使用
   folderName: 'dmk', // 生成图片的文件夹名称
   format: 'yyyy-mm-dd', // 生成图片的名称的前缀，不建议以/作为分隔符，因为生成时会将/当作文件夹分隔符，支持yy、mm、dd、yyyy随机排列
-  max: 20, // 最多生成包括多少个关键词的云图，超出设置的值时会随机选中10个
+  max: 10, // 最多生成包括多少个关键词的云图，超出设置的值时会随机选中10个
   singleKeywordMaxLength: 10, // 单个关键词的最大长度，超出后会自动截取成...
   // 设置作者字段后，在生成的云图的右下角进行签名
   authorOption: {
     author: 'weirui88888', // 作者名
     font: {
-      family: 'zh', // 同上，当前支持zh和en
+      family: 'en', // 同上，当前支持zh和en(为了缩小体积包，已经去除中文字体包，只支持en)
       color: '#000000', // 字体颜色，如果在暗黑模式下，请设置正确的颜色，否则看不见～
       size: 18 // 字体大小，注：作者绘制区域在canvas画布的右下角100*100大小，过多的字体或者过大的字体导致看不见～
     }

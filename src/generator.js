@@ -205,9 +205,6 @@ class Generator {
       ctx.fillStyle = canvasSetting.black
       ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
       ctx.restore()
-      // if (this.themeDarkRadius) {
-      //   this.setDarkRadiusRect(0, 0, this.canvasWidth, this.canvasHeight, 50, 20, '#ffffff')
-      // }
     } else {
       if (this.themeLightBorder) {
         ctx.save()
